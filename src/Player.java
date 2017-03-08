@@ -1,4 +1,5 @@
 // package com.gobang;
+import java.lang.Character;
 
 public class Player {
 	public int size;			// default 11
@@ -17,20 +18,34 @@ public class Player {
 		this.board = new ChessBoard(this.size);
 	}
 
+	public void play() {
+		int color = 1;
+		while(true) {
+			System.out.println("enter position >> ");
+			String position = System.console().readLine();
+			board.put(Character.getNumericValue(position.charAt(0)), Character.getNumericValue(position.charAt(1)));
+		}
+	}
+
 }
 
 class ChessBoard {
 	public int size;		// default to 11
 	public int[][] chess;
+	public int color;		// current color, 1 : black, 2 : white
 
 	public ChessBoard() {
 		this.size = 11;
-		this.initialize();
+		this.color = 1;		
+		initialize();
+		printBoard();
 	}
 
 	public ChessBoard(int size) {
 		this.size = size;
-		this.initialize();
+		this.color = 1;		
+		initialize();
+		printBoard();
 	}
 
 	public void initialize() {
@@ -40,6 +55,13 @@ class ChessBoard {
 				this.chess[i][j] = 0;
 			}
 		}
+	}
+
+	public void swichColor() {
+		if (color == 1) 
+			color = -1;
+		else 
+			color = 1;
 	}
 
 	public void printBoard() {
@@ -59,6 +81,18 @@ class ChessBoard {
 		else
 			System.out.print("-");
 		System.out.print(' ');
+	}
+
+	public void put(int x, int y) {
+		if (x > this.size || y > this.size || x < 0 || y < 0) {
+			System.out.println("error! Position not in the board");
+		} else if (this.chess[x][y] != 0) {
+			System.out.println("error! This position is already taken");
+		} else {
+			this.chess[x][y] = this.color;
+			printBoard();			
+		}
+		swichColor();
 	}
 
 
