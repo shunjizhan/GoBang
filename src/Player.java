@@ -23,7 +23,7 @@ public class Player {
 		while(true) {
 			System.out.println("enter position >> ");
 			String position = System.console().readLine();
-			board.put(Character.getNumericValue(position.charAt(0)), Character.getNumericValue(position.charAt(1)));
+			board.put(position.charAt(0), Character.getNumericValue(position.charAt(1)));
 		}
 	}
 
@@ -58,22 +58,20 @@ class ChessBoard {
 	}
 
 	public void swichColor() {
-		if (color == 1) 
-			color = -1;
-		else 
-			color = 1;
+		this.color = this.color * (-1);
 	}
 
 	public void printBoard() {
 		// first line
-		String chars = "abcdefghiuklmnopqrstuvwxyz";
+		String chars = "abcdefghijklmnopqrstuvwxyz";
 		System.out.print("   ");
 		for (int a = 0; a < this.size; a++) {
-			System.out.print(chars.charAt(a));
+			System.out.print(chars.charAt(a % 17));
 			System.out.print(' ');
 		}
 		System.out.println(' ');
 
+		// other lines
 		for (int i = 0; i < this.size; i++) {
 			if (i < 10) {System.out.print(' ');}
 			System.out.print(i);
@@ -95,16 +93,21 @@ class ChessBoard {
 		System.out.print(' ');
 	}
 
-	public void put(int x, int y) {
+	public void put(char xChar, int y) {
+		int x = charToInt(xChar);
 		if (x > this.size || y > this.size || x < 0 || y < 0) {
 			System.out.println("error! Position not in the board");
-		} else if (this.chess[x][y] != 0) {
+		} else if (this.chess[y][x] != 0) {
 			System.out.println("error! This position is already taken");
 		} else {
-			this.chess[x][y] = this.color;
+			this.chess[y][x] = this.color;
 			printBoard();			
 		}
 		swichColor();
+	}
+
+	public int charToInt(char c) {
+		return (int) c - 97;
 	}
 
 
