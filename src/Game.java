@@ -3,11 +3,8 @@
 public class Game {
 
     public static void main(String[] args) {
-    	Player p = new Player();
+    	Player p = new Player(11, true);
     	p.play();
-    	// p.board.printBoard();
-
-        // System.out.println(p.board.chess);
     }
     
 

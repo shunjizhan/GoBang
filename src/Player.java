@@ -15,7 +15,7 @@ public class Player {
 	public Player(int size, boolean light) {
 		this.size = size;
 		this.light = light;
-		this.board = new ChessBoard(this.size);
+		this.board = new ChessBoard(this.size, light);
 	}
 
 	public void play() {
@@ -41,9 +41,9 @@ class ChessBoard {
 		printBoard();
 	}
 
-	public ChessBoard(int size) {
+	public ChessBoard(int size, boolean... light) {
 		this.size = size;
-		this.color = 1;		
+		this.color = (light.length > 0 && light[0] == true) ? -1 : 1;
 		initialize();
 		printBoard();
 	}
@@ -65,7 +65,19 @@ class ChessBoard {
 	}
 
 	public void printBoard() {
+		// first line
+		String chars = "abcdefghiuklmnopqrstuvwxyz";
+		System.out.print("   ");
+		for (int a = 0; a < this.size; a++) {
+			System.out.print(chars.charAt(a));
+			System.out.print(' ');
+		}
+		System.out.println(' ');
+
 		for (int i = 0; i < this.size; i++) {
+			if (i < 10) {System.out.print(' ');}
+			System.out.print(i);
+			System.out.print(' ');
 			for (int j = 0; j < this.size; j++) {
 				printSingleChess(this.chess[i][j]);	
 			}
