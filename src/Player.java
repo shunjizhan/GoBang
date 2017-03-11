@@ -29,6 +29,10 @@ public class Player {
 
 }
 
+class Computer {
+	public int[][] nextMove(int[][])
+}
+
 class ChessBoard {
 	public int size;		// default to 11
 	public int[][] chess;
@@ -64,10 +68,17 @@ class ChessBoard {
 	public void printBoard() {
 		// first line
 		String chars = "abcdefghijklmnopqrstuvwxyz";
-		System.out.print("   ");
+		System.out.print("     ");
 		for (int a = 0; a < this.size; a++) {
 			System.out.print(chars.charAt(a % 17));
 			System.out.print(' ');
+		}
+		System.out.println(' ');
+
+		// second line
+		System.out.print("    ");
+		for (int a = 0; a < this.size; a++) {
+			System.out.print("__");
 		}
 		System.out.println(' ');
 
@@ -75,7 +86,7 @@ class ChessBoard {
 		for (int i = 0; i < this.size; i++) {
 			if (i < 10) {System.out.print(' ');}
 			System.out.print(i);
-			System.out.print(' ');
+			System.out.print(" | ");
 			for (int j = 0; j < this.size; j++) {
 				printSingleChess(this.chess[i][j]);	
 			}
