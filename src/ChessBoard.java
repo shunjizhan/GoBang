@@ -2,16 +2,22 @@
 
 public class ChessBoard {
 	public int size;		// default to 11
-	public int[][] chessStatus;		// chessStatus status
+	public int totalPositions;
+	public int chessCount;
+	public int[][] chessStatus;		// [y][x] !!!!!!!
 
 	public ChessBoard() {
 		this.size = 11;
+		this.totalPositions = this.size * this.size;
+		this.chessCount = 0;
 		initialize();
 		printBoard();
 	}
 
 	public ChessBoard(int size) {
 		this.size = size;
+		this.totalPositions = this.size * this.size;
+		this.chessCount = 0;
 		initialize();
 		printBoard();
 	}
@@ -23,6 +29,7 @@ public class ChessBoard {
 				this.chessStatus[i][j] = 0;
 			}
 		}
+		this.chessCount = 0;
 	}
 
 	public void printBoard() {
@@ -67,15 +74,19 @@ public class ChessBoard {
 	public boolean put(int x, int y, int color) {
 		if (x >= this.size || y >= this.size || x < 0 || y < 0) {
 			System.out.println("error! Position not in the board");
+			this.printBoard();	
 			return false;
 		} 
 		else if (this.chessStatus[y][x] != 0) {
-			System.out.println("error! This position is already taken");
+			System.out.println("error! This position " + x + ' ' + y + "is already taken");
+			System.out.println("status: " + this.chessStatus[y][x]);
+			this.printBoard();	
 			return false;
 		} 
 		else {
 			this.chessStatus[y][x] = color;
-			printBoard();			
+			this.chessCount++;
+			this.printBoard();			
 			return true;
 		}
 	}
@@ -84,7 +95,7 @@ public class ChessBoard {
 		// horizontal
 		int continueChess = 0;
 		for (int i = 0; i < this.size; i++) {
-			if (chessStatus[i][x] == 1) {
+			if (chessStatus[i][x] == color) {
 				continueChess++;
 				if (continueChess == 5)
 					return true;
@@ -96,7 +107,7 @@ public class ChessBoard {
 		// vertical
 		continueChess = 0;
 		for (int j = 0; j < this.size; j++) {
-			if (chessStatus[y][j] == 1) {
+			if (chessStatus[y][j] == color) {
 				continueChess++;
 				if (continueChess == 5)
 					return true;
@@ -117,7 +128,8 @@ public class ChessBoard {
 		pY++;	// now it is the first position to check
 
 		while(this.isInBoard(pX, pY)) {
-			if (chessStatus[pY][pX] == 1) {
+			// System.out.println("111 checking: " + pX + ' ' + pY);
+			if (chessStatus[pY][pX] == color) {
 				continueChess++;
 				if (continueChess == 5)
 					return true;
@@ -142,7 +154,8 @@ public class ChessBoard {
 		pY--;	// now it is the first position to check
 
 		while(this.isInBoard(pX, pY)) {
-			if (chessStatus[pY][pX] == 1) {
+			// System.out.println("222 checking: " + pX + ' ' + pY);
+			if (chessStatus[pY][pX] == color) {
 				continueChess++;
 				if (continueChess == 5)
 					return true;
@@ -159,7 +172,16 @@ public class ChessBoard {
 	}
 
 	public boolean isInBoard(int x, int y) {
-		return (x > 0 && y > 0 && x < this.size && y < this.size);
+		return (x >= 0 && y >= 0 && x < this.size && y < this.size);
+	}
+
+	public boolean checkDraw() {
+		// System.out.print("chessCount: " + this.chessCount);
+		// System.out.println("total: " + this.totalPositions);
+		if (this.chessCount == this.totalPositions)
+			return true;
+		else 
+			return false;
 	}
 
 

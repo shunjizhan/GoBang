@@ -2,7 +2,7 @@
 
 public class Game {
     public static void main(String[] args) {
-    	Play game = new Play(15);
+    	Play game = new Play(7);
     	game.start();
     }
 }
@@ -48,6 +48,9 @@ class Play {
         if (this.board.checkGameOver(x, y, color) == true) {
           System.out.println(color + " won!");
           this.initializeGame();
+        } else if (this.board.checkDraw() == true) {
+          System.out.println("Draw!");
+          this.initializeGame();  
         }
       }
 
