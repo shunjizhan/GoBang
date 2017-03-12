@@ -65,7 +65,7 @@ public class ChessBoard {
 	}
 
 	public boolean put(int x, int y, int color) {
-		if (x > this.size || y > this.size || x < 0 || y < 0) {
+		if (x >= this.size || y >= this.size || x < 0 || y < 0) {
 			System.out.println("error! Position not in the board");
 			return false;
 		} 

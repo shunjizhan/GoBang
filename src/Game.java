@@ -2,7 +2,7 @@
 
 public class Game {
     public static void main(String[] args) {
-    	Play game = new Play();
+    	Play game = new Play(15);
     	game.start();
     }
 }
@@ -13,11 +13,14 @@ class Play {
     public Player currentPlayer;
 
     Play() {
-    	this.board = new ChessBoard(11);
+    	this.board = new ChessBoard(15);
       this.initializeGame();
     }
 
     Play(int size) {
+      if (size < 5) { size = 5; }
+      if (size > 26) { size = 26; }
+
     	this.board = new ChessBoard(size);
       this.initializeGame();
     }
@@ -58,17 +61,31 @@ class Play {
     }
 
     public void humanPlay() {
-      System.out.println("enter position >> ");
-      String position = System.console().readLine();
+      String position = this.readInput();
 
-      while (position.length() < 2) {
-        System.out.println("please enter a valid position!");
-        System.out.println("enter position >> ");
-        position = System.console().readLine();
+      int x = 0, y = 0;
+      while(true) {
+        try {
+          while (position.length() < 2) {
+            System.out.println("please enter a valid position!");
+            position = this.readInput();
+          }      
+          x = charToInt(position.charAt(0));
+          y = Integer.parseInt(position.substring(1));
+          break;
+        } 
+        catch (NumberFormatException e) {
+          System.out.println("please enter a valid position!");
+          position = this.readInput();
+        }
       }
-      int x = charToInt(position.charAt(0));
-      int y = Integer.parseInt(position.substring(1));
+
       this.putChessOnBoard(x, y, currentPlayer.color);
+    }
+
+    public String readInput() {
+      System.out.println("enter position >> ");
+      return System.console().readLine();
     }
 
     public void aiPlay() {
