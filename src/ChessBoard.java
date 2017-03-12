@@ -2,7 +2,7 @@
 
 public class ChessBoard {
 	public int size;		// default to 11
-	public int[][] chessStatus;	// chessStatus status
+	public int[][] chessStatus;		// chessStatus status
 
 	public ChessBoard() {
 		this.size = 11;
@@ -78,6 +78,10 @@ public class ChessBoard {
 			printBoard();			
 			return true;
 		}
+	}
+
+	public int checkGameOver(int x, int y) {
+		return 0;
 	}
 
 

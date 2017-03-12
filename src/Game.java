@@ -14,15 +14,18 @@ class Play {
 
     Play() {
     	this.board = new ChessBoard(11);
-    	this.p1 = new Player(1);		// black
-    	this.p2 = new Player(-1, true);		// white
-      this.currentPlayer = p1;
+      this.initializeGame();
     }
 
     Play(int size) {
     	this.board = new ChessBoard(size);
-    	this.p1 = new Player(1);		// black
-    	this.p2 = new Player(-1, true);		// white
+      this.initializeGame();
+    }
+
+    public void initializeGame() {
+      this.board.initialize();
+      this.p1 = new Player(1);          // black
+      this.p2 = new Player(-1, true);   // white 
       this.currentPlayer = p1;
     }
 
@@ -36,8 +39,15 @@ class Play {
     }
 
     public void putChessOnBoard(int x, int y, int color) {
-    	if (this.board.put(x, y, color) == true)
+    	if (this.board.put(x, y, color) == true) {
         this.switchPlayer();
+      }
+
+      int gameStatus = this.board.checkGameOver(x, y);
+      if (gameStatus != 0) {
+        System.out.println(gameStatus + " won!");
+        this.initializeGame();
+      }
     }
 
     public void switchPlayer() {
