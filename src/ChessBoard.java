@@ -33,42 +33,45 @@ public class ChessBoard {
 	}
 
 	public void printBoard() {
-		// first line
-		String chars = "abcdefghijklmnopqrstuvwxyz";
-		System.out.print("     ");
-		for (int a = 0; a < this.size; a++) {
-			System.out.print(chars.charAt(a % 17));
-			System.out.print(' ');
-		}
-		System.out.println(' ');
+	 	String chars = "abcdefghijklmnopqrstuvwxyz".substring(0, this.size);
+	 	for (char c : chars.toCharArray()) {
+	 		System.out.print("   " + c);
+	 	}
+	 	System.out.println(" ");
 
-		// second line
-		System.out.print("    ");
-		for (int a = 0; a < this.size; a++) {
-			System.out.print("__");
-		}
-		System.out.println(' ');
+	 	System.out.print("   +");
+	 	for (int i = 0; i < this.size; i++) {
+	 		System.out.print("---+");
+	 	}
+	 	System.out.println(" ");
 
-		// other lines
-		for (int i = 0; i < this.size; i++) {
-			if (i < 10) {System.out.print(' ');}
-			System.out.print(i);
-			System.out.print(" | ");
-			for (int j = 0; j < this.size; j++) {
-				printSingleChess(this.chessStatus[i][j]);	
-			}
-			System.out.println(' ');
-		}
+	 	for (int i = 0; i < this.size; i++) {
+	 		for (int j = 0; j < this.size; j++) {
+	 			this.printSingleChess(this.chessStatus[i][j]);
+	 		}
+	 		System.out.println(" ");
+
+	 		System.out.print("   +");
+	 		for (int k = 0; k < this.size; k++) {
+	 			System.out.print("---+");
+		 	}
+		 	System.out.println(" ");
+	 	}
+	 	
+	 	System.out.print("   +");
+	 	for (int i = 0; i < this.size; i++) {
+	 		System.out.print("---+");
+	 	}
+	 	System.out.println(" ");
 	}
 
 	public void printSingleChess(int chessStatus) {
 		if (chessStatus == 1)
-			System.out.print("O");
+			System.out.print(" D |");
 		else if (chessStatus == -1)
-			System.out.print("X");
+			System.out.print(" L |");
 		else
-			System.out.print("-");
-		System.out.print(' ');
+			System.out.print("   |");
 	}
 
 	public boolean put(int x, int y, int color) {
@@ -188,6 +191,35 @@ public class ChessBoard {
 
 
 }
+
+	// public void printBoard() {
+	// 	// first line
+	// 	String chars = "abcdefghijklmnopqrstuvwxyz";
+	// 	System.out.print("     ");
+	// 	for (int a = 0; a < this.size; a++) {
+	// 		System.out.print(chars.charAt(a % 17));
+	// 		System.out.print(' ');
+	// 	}
+	// 	System.out.println(' ');
+
+	// 	// second line
+	// 	System.out.print("    ");
+	// 	for (int a = 0; a < this.size; a++) {
+	// 		System.out.print("__");
+	// 	}
+	// 	System.out.println(' ');
+
+	// 	// other lines
+	// 	for (int i = 0; i < this.size; i++) {
+	// 		if (i < 10) {System.out.print(' ');}
+	// 		System.out.print(i);
+	// 		System.out.print(" | ");
+	// 		for (int j = 0; j < this.size; j++) {
+	// 			printSingleChess(this.chessStatus[i][j]);	
+	// 		}
+	// 		System.out.println(' ');
+	// 	}
+	// }
 
 
 
