@@ -11,7 +11,6 @@ public class ChessBoard {
 		this.totalPositions = this.size * this.size;
 		this.chessCount = 0;
 		initialize();
-		printBoard();
 	}
 
 	public ChessBoard(int size) {
@@ -19,7 +18,6 @@ public class ChessBoard {
 		this.totalPositions = this.size * this.size;
 		this.chessCount = 0;
 		initialize();
-		printBoard();
 	}
 
 	public void initialize() {
@@ -68,9 +66,9 @@ public class ChessBoard {
 
 	public void printSingleChess(int chessStatus) {
 		if (chessStatus == 1)
-			System.out.print(" X |");
+			System.out.print(" D |");
 		else if (chessStatus == -1)
-			System.out.print(" O |");
+			System.out.print(" L |");
 		else
 			System.out.print("   |");
 	}
@@ -84,7 +82,7 @@ public class ChessBoard {
 		} 
 		else if (this.chessStatus[y][x] != 0) {
 			System.out.println("error! This position " + x + ' ' + y + "is already taken");
-			System.out.println("status: " + this.chessStatus[y][x]);
+			// System.out.println("status: " + this.chessStatus[y][x]);
 			this.printBoard();	
 			return false;
 		} 

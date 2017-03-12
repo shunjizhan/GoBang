@@ -1,4 +1,7 @@
 // package com.gobang;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Game {
     public static void main(String[] args) {
@@ -52,6 +55,7 @@ class Play {
     public Player currentPlayer;
     public boolean humanFirst;
     public int depth;
+    public BufferedReader br;
 
     Play() {
     	this.board = new ChessBoard(15);
@@ -81,6 +85,7 @@ class Play {
     }
 
     public void initializeGame() {
+	    this.br = new BufferedReader(new InputStreamReader(System.in));
       if (this.humanFirst) {
         // System.out.println("1111111");
         this.p1 = new Player(1);          // black human
@@ -92,15 +97,45 @@ class Play {
       }
       this.board.initialize();
       this.currentPlayer = p1;
+
+      System.out.print("Size: " + this.board.size + ", ");
+    	System.out.println("depth: " + this.depth);
+    	this.board.printBoard();
+    	System.out.println("Move played: --");
     }
 
     public void start() {
   		while(true) {
-        if (currentPlayer.isAI)
+        if (currentPlayer.isAI) {
+        	this.printPlayer();
           this.aiPlay();
-        else
+        } else {
+        	this.printPlayer();
           this.humanPlay();
+        }
       }
+    }
+
+    public void printPlayer() {
+    	String color, type, message1, message2;
+    	boolean ai = this.currentPlayer.isAI;
+    	if (ai)
+    		type = "(COM) ";
+    	else 
+    		type = "(human) ";
+    	
+    	if (this.currentPlayer.color == 1) 
+    		color = "Dark player ";
+    	else 
+    		color = "Light player ";
+
+    	message1 = color + type + "plays now";
+    	System.out.println(message1); 
+
+    	if (ai) {
+	    	message2 = color + type + "is calculating its next move... (this might take up to 30 seconds)";
+	    	System.out.println(message2);   	
+	    }
     }
 
     public void putChessOnBoard(int x, int y, int color) {
@@ -112,14 +147,29 @@ class Play {
         this.switchPlayer();
 
         if (this.board.checkGameOver(x, y, color) == true) {
-          System.out.println(color + " won!");
+          this.printResult(color);
           this.initializeGame();
         } else if (this.board.checkDraw() == true) {
           System.out.println("Draw!");
           this.initializeGame();  
         }
       }
+    }
 
+    public void printResult(int color) {
+    	String colorWin, typeWin, message;
+    	if (this.currentPlayer.isAI)
+    		typeWin = "(COM) ";
+    	else 
+    		typeWin = "(human) ";
+    	
+    	if (color == 1) 
+    		colorWin = "Dark player ";
+    	else 
+    		colorWin = "Light player ";
+
+    	message = colorWin + typeWin + "Wins!";
+    	System.out.println(message);
     }
 
     public void switchPlayer() {
@@ -153,8 +203,18 @@ class Play {
     }
 
     public String readInput() {
-      System.out.println("enter position >> ");
-      return System.console().readLine();
+      System.out.print("> ");
+      System.out.flush();
+      // return System.console().readLine();
+      String input = "";
+      try {
+      	input = this.br.readLine();
+      	
+      } catch (IOException e) {
+      	e.printStackTrace();
+      }
+      return input;
+      
     }
 
     public void aiPlay() {
