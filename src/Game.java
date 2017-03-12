@@ -2,18 +2,61 @@
 
 public class Game {
     public static void main(String[] args) {
-    	Play game = new Play(11);
+      InputHelper h = new InputHelper();
+
+      int i = 0;
+      int argLength = args.length;
+      String currentArg;
+      while (i < argLength) {
+        switch (args[i]) {
+          case "-l":
+            h.first = false;
+            break;
+          case "-n":
+            if (i++ < argLength) {
+              h.size = Integer.parseInt(args[i]);
+            }
+            break;
+          case "-d":
+            if (i++ < argLength) {
+              h.depth = Integer.parseInt(args[i]);
+              i++;
+            }
+            break;
+          default:
+            break;
+        }
+        i++;
+      }
+
+    	Play game = new Play(h.size, h.first, h.depth);
     	game.start();
     }
+}
+
+class InputHelper {
+  public boolean first;
+  public int size;
+  public int depth;
+
+  InputHelper() {
+    this.first = true;
+    this.size = 11;
+    this.depth = 2;
+  }
 }
 
 class Play {
     public ChessBoard board;
     public Player p1, p2;
     public Player currentPlayer;
+    public boolean humanFirst;
+    public int depth;
 
     Play() {
     	this.board = new ChessBoard(15);
+      this.humanFirst = true;
+      this.depth = 2;
       this.initializeGame();
     }
 
@@ -22,13 +65,30 @@ class Play {
       if (size > 26) { size = 26; }
 
     	this.board = new ChessBoard(size);
-      this.initializeGame();
+      this.humanFirst = true;
+      this.depth = 2;
+      this.initializeGame(); 
+    }
+
+    Play(int size, boolean first, int depth) {
+      if (size < 5) { size = 5; }
+      if (size > 26) { size = 26; }
+
+      this.board = new ChessBoard(size);
+      this.humanFirst = first;
+      this.depth = depth;
+      this.initializeGame();      
     }
 
     public void initializeGame() {
+      if (this.humanFirst) {
+        this.p1 = new Player(1);          // black human
+        this.p2 = new Player(-1, true);   // white computer
+      } else {
+        this.p1 = new Player(-1, true);   // black computer
+        this.p2 = new Player(1);          // white human
+      }
       this.board.initialize();
-      this.p1 = new Player(1);          // black
-      this.p2 = new Player(-1, true);   // white 
       this.currentPlayer = p1;
     }
 
