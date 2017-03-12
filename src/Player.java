@@ -2,126 +2,15 @@
 import java.lang.Character;
 
 public class Player {
-	public int size;			// default 11
-	public boolean light;		// default false
-	public ChessBoard board;
+	public int color;			// 1 is blck, -1 is white
 
 	public Player() {
-		this.size = 11;
-		this.light = false;
-		this.board = new ChessBoard(this.size);
+		this.color = 1;
 	}
 
-	public Player(int size, boolean light) {
-		this.size = size;
-		this.light = light;
-		this.board = new ChessBoard(this.size, light);
+	public Player(int color) {
+		this.color = color;
 	}
-
-	public void play() {
-		int color = 1;
-		while(true) {
-			System.out.println("enter position >> ");
-			String position = System.console().readLine();
-			board.put(position.charAt(0), Character.getNumericValue(position.charAt(1)));
-		}
-	}
-
-}
-
-class Computer {
-	public int[][] nextMove(int[][])
-}
-
-class ChessBoard {
-	public int size;		// default to 11
-	public int[][] chess;
-	public int color;		// current color, 1 : black, 2 : white
-
-	public ChessBoard() {
-		this.size = 11;
-		this.color = 1;		
-		initialize();
-		printBoard();
-	}
-
-	public ChessBoard(int size, boolean... light) {
-		this.size = size;
-		this.color = (light.length > 0 && light[0] == true) ? -1 : 1;
-		initialize();
-		printBoard();
-	}
-
-	public void initialize() {
-		this.chess = new int[this.size][this.size];
-		for (int i = 0; i < this.size; i++) {
-			for (int j = 0; j < this.size; j++) {
-				this.chess[i][j] = 0;
-			}
-		}
-	}
-
-	public void swichColor() {
-		this.color = this.color * (-1);
-	}
-
-	public void printBoard() {
-		// first line
-		String chars = "abcdefghijklmnopqrstuvwxyz";
-		System.out.print("     ");
-		for (int a = 0; a < this.size; a++) {
-			System.out.print(chars.charAt(a % 17));
-			System.out.print(' ');
-		}
-		System.out.println(' ');
-
-		// second line
-		System.out.print("    ");
-		for (int a = 0; a < this.size; a++) {
-			System.out.print("__");
-		}
-		System.out.println(' ');
-
-		// other lines
-		for (int i = 0; i < this.size; i++) {
-			if (i < 10) {System.out.print(' ');}
-			System.out.print(i);
-			System.out.print(" | ");
-			for (int j = 0; j < this.size; j++) {
-				printSingleChess(this.chess[i][j]);	
-			}
-			System.out.println(' ');
-		}
-	}
-
-	public void printSingleChess(int chess) {
-		if (chess == 1)
-			System.out.print("O");
-		else if (chess == -1)
-			System.out.print("X");
-		else
-			System.out.print("-");
-		System.out.print(' ');
-	}
-
-	public void put(char xChar, int y) {
-		int x = charToInt(xChar);
-		if (x > this.size || y > this.size || x < 0 || y < 0) {
-			System.out.println("error! Position not in the board");
-		} else if (this.chess[y][x] != 0) {
-			System.out.println("error! This position is already taken");
-		} else {
-			this.chess[y][x] = this.color;
-			printBoard();			
-		}
-		swichColor();
-	}
-
-	public int charToInt(char c) {
-		return (int) c - 97;
-	}
-
-
 }
 
 
