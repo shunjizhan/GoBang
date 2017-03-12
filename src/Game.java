@@ -33,12 +33,11 @@ class Play {
         else
           this.humanPlay();
       }
-
     }
 
     public void putChessOnBoard(int x, int y, int color) {
-    	this.board.put(x, y, color);
-      this.switchPlayer();
+    	if (this.board.put(x, y, color) == true)
+        this.switchPlayer();
     }
 
     public void switchPlayer() {

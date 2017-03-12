@@ -64,14 +64,19 @@ public class ChessBoard {
 		System.out.print(' ');
 	}
 
-	public void put(int x, int y, int color) {
+	public boolean put(int x, int y, int color) {
 		if (x > this.size || y > this.size || x < 0 || y < 0) {
 			System.out.println("error! Position not in the board");
-		} else if (this.chessStatus[y][x] != 0) {
+			return false;
+		} 
+		else if (this.chessStatus[y][x] != 0) {
 			System.out.println("error! This position is already taken");
-		} else {
+			return false;
+		} 
+		else {
 			this.chessStatus[y][x] = color;
 			printBoard();			
+			return true;
 		}
 	}
 
