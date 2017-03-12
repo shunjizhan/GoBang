@@ -41,13 +41,13 @@ class Play {
     public void putChessOnBoard(int x, int y, int color) {
     	if (this.board.put(x, y, color) == true) {
         this.switchPlayer();
+
+        if (this.board.checkGameOver(x, y, color) == true) {
+          System.out.println(color + " won!");
+          this.initializeGame();
+        }
       }
 
-      int gameStatus = this.board.checkGameOver(x, y);
-      if (gameStatus != 0) {
-        System.out.println(gameStatus + " won!");
-        this.initializeGame();
-      }
     }
 
     public void switchPlayer() {
@@ -61,8 +61,13 @@ class Play {
       System.out.println("enter position >> ");
       String position = System.console().readLine();
 
+      while (position.length() < 2) {
+        System.out.println("please enter a valid position!");
+        System.out.println("enter position >> ");
+        position = System.console().readLine();
+      }
       int x = charToInt(position.charAt(0));
-      int y = Character.getNumericValue(position.charAt(1));
+      int y = Integer.parseInt(position.substring(1));
       this.putChessOnBoard(x, y, currentPlayer.color);
     }
 

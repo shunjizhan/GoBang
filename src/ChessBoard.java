@@ -80,11 +80,99 @@ public class ChessBoard {
 		}
 	}
 
-	public int checkGameOver(int x, int y) {
-		return 0;
+	public boolean checkGameOver(int x, int y, int color) {
+		// horizontal
+		int continueChess = 0;
+		for (int i = 0; i < this.size; i++) {
+			if (chessStatus[i][x] == 1) {
+				continueChess++;
+				if (continueChess == 5)
+					return true;
+			} else {
+				continueChess = 0;
+			}
+		}
+
+		// vertical
+		continueChess = 0;
+		for (int j = 0; j < this.size; j++) {
+			if (chessStatus[y][j] == 1) {
+				continueChess++;
+				if (continueChess == 5)
+					return true;
+			} else {
+				continueChess = 0;
+			}
+		}
+
+		// diagnal 1
+		continueChess = 0;
+		int pX = x;
+		int pY = y;
+		while(this.isInBoard(pX, pY)) {
+			pX--;
+			pY--;
+		}
+		pX++;
+		pY++;	// now it is the first position to check
+
+		while(this.isInBoard(pX, pY)) {
+			if (chessStatus[pY][pX] == 1) {
+				continueChess++;
+				if (continueChess == 5)
+					return true;
+			}
+			else {
+				continueChess = 0;
+			}
+
+			pX++;
+			pY++;
+		}
+
+			// diagnal 1
+		continueChess = 0;
+		pX = x;
+		pY = y;
+		while(this.isInBoard(pX, pY)) {
+			pX--;
+			pY++;
+		}
+		pX++;
+		pY--;	// now it is the first position to check
+
+		while(this.isInBoard(pX, pY)) {
+			if (chessStatus[pY][pX] == 1) {
+				continueChess++;
+				if (continueChess == 5)
+					return true;
+			}
+			else {
+				continueChess = 0;
+			}
+
+			pX++;
+			pY--;
+		}
+
+		return false;
+	}
+
+	public boolean isInBoard(int x, int y) {
+		return (x > 0 && y > 0 && x < this.size && y < this.size);
 	}
 
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
