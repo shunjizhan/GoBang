@@ -33,6 +33,7 @@ public class ChessBoard {
 	}
 
 	public void printBoard() {
+		System.out.print("  ");
 	 	String chars = "abcdefghijklmnopqrstuvwxyz".substring(0, this.size);
 	 	for (char c : chars.toCharArray()) {
 	 		System.out.print("   " + c);
@@ -46,6 +47,11 @@ public class ChessBoard {
 	 	System.out.println(" ");
 
 	 	for (int i = 0; i < this.size; i++) {
+	 		if (i + 1 >= 10)
+	 			System.out.print((i + 1) + " |");
+	 		else 
+	 			System.out.print(" " + (i + 1) + " |");
+
 	 		for (int j = 0; j < this.size; j++) {
 	 			this.printSingleChess(this.chessStatus[i][j]);
 	 		}
@@ -58,11 +64,6 @@ public class ChessBoard {
 		 	System.out.println(" ");
 	 	}
 	 	
-	 	System.out.print("   +");
-	 	for (int i = 0; i < this.size; i++) {
-	 		System.out.print("---+");
-	 	}
-	 	System.out.println(" ");
 	}
 
 	public void printSingleChess(int chessStatus) {

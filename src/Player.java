@@ -21,7 +21,7 @@ public class Player {
 	}
 
 	public int[] decidePosition(int[][] chessStatus) {
-		System.out.println("deciding position...");
+		// System.out.println("deciding position...");
 		int boardSize = chessStatus.length;
 		int random1, random2;
 		int[] result = new int[2];

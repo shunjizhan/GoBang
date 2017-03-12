@@ -2,7 +2,7 @@
 
 public class Game {
     public static void main(String[] args) {
-    	Play game = new Play(7);
+    	Play game = new Play(11);
     	game.start();
     }
 }
@@ -42,6 +42,7 @@ class Play {
     }
 
     public void putChessOnBoard(int x, int y, int color) {
+      y--;
     	if (this.board.put(x, y, color) == true) {
         this.switchPlayer();
 
