@@ -68,14 +68,15 @@ public class ChessBoard {
 
 	public void printSingleChess(int chessStatus) {
 		if (chessStatus == 1)
-			System.out.print(" D |");
+			System.out.print(" X |");
 		else if (chessStatus == -1)
-			System.out.print(" L |");
+			System.out.print(" O |");
 		else
 			System.out.print("   |");
 	}
 
 	public boolean put(int x, int y, int color) {
+		// System.out.print("PUT!!!!!!");
 		if (x >= this.size || y >= this.size || x < 0 || y < 0) {
 			System.out.println("error! Position not in the board");
 			this.printBoard();	

@@ -82,9 +82,11 @@ class Play {
 
     public void initializeGame() {
       if (this.humanFirst) {
+        // System.out.println("1111111");
         this.p1 = new Player(1);          // black human
         this.p2 = new Player(-1, true);   // white computer
       } else {
+        // System.out.println("2222222");
         this.p1 = new Player(-1, true);   // black computer
         this.p2 = new Player(1);          // white human
       }
@@ -104,6 +106,9 @@ class Play {
     public void putChessOnBoard(int x, int y, int color) {
       y--;
     	if (this.board.put(x, y, color) == true) {
+        int pY = y + 1;
+        System.out.println("Move played: " + intToChar(x) + pY);
+
         this.switchPlayer();
 
         if (this.board.checkGameOver(x, y, color) == true) {
@@ -159,6 +164,10 @@ class Play {
 
     public int charToInt(char c) {
       return (int) c - 97;
+    }
+
+    public char intToChar(int i) {
+      return (char) (i + 97);
     }
 
 }

@@ -1,21 +1,30 @@
 <project>
 
-    <target name="clean">
-        <delete dir="build"/>
-    </target>
+  <target name="clean">
+    <!-- <delete dir="build"/> -->
+    <delete>
+      <fileset dir="." includes="*.class"/>
+      <fileset dir="." includes="*.out"/>
+    </delete>
+  </target>
 
-    <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes" debug="true"/>
-    </target>
+  <target name="compile">
+    <mkdir dir="build/classes"/>
+    <!-- <javac srcdir="src" destdir="build/classes" debug="true"/> -->
+    <javac srcdir="src" destdir="." debug="true"/>
+  </target>
 
-<!--     <target name="jar">
-        <mkdir dir="build/jar"/>
-        <jar destfile="build/jar/Game.jar" basedir="build/classes" />
-    </target> -->
+  <target name="jar">
+    <!-- <mkdir dir="build/jar"/> -->
+    <jar destfile="AI.jar" basedir="build/classes" />
+<!--     <manifest>
+      <attribute name="AI" value="com.gobang"/>
+    </manifest> -->
+  </target>
 
-    <target name="run" depends="clean, compile">
-        <java classpath="build/classes" classname="Game" />
-    </target>
+  <target name="run" depends="clean, compile">
+    <!-- <java classpath="build/classes" classname="Game" /> -->
+    <java classpath="." classname="Game" />
+  </target>
 
 </project>
