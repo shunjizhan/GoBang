@@ -1,2 +1,2 @@
 test: AI
-	python referee.py 6 ./AI ./AI
+	python referee.py 11 ./AI ./AI

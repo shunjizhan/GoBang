@@ -1,2 +1,2 @@
 #!/bin/bash
-java Game -d 2 $@
+java Game $@

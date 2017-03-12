@@ -139,10 +139,10 @@ class Play {
     }
 
     public void putChessOnBoard(int x, int y, int color) {
-      y--;
+    	// x correspond to letter
+    	// y correspond to number
     	if (this.board.put(x, y, color) == true) {
-        int pY = y + 1;
-        System.out.println("Move played: " + intToChar(x) + pY);
+        System.out.println("Move played: " + intToChar(x) + y);
 
         this.switchPlayer();
 
@@ -213,8 +213,7 @@ class Play {
       } catch (IOException e) {
       	e.printStackTrace();
       }
-      return input;
-      
+      return input; 
     }
 
     public void aiPlay() {

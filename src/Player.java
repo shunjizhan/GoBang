@@ -30,12 +30,21 @@ public class Player {
 			random1 = (int)(Math.random() * boardSize);
 			random2 = (int)(Math.random() * boardSize);
 			if (chessStatus[random1][random2] == 0) {
-				result[0] = random2;
-				result[1] = random1;
+				result[0] = random2;		// letter
+				result[1] = (random1 + 1);	// number
+				System.out.println("decided: " + intToChar(random2) + result[1]);
 				return result;
 			}
 		}
 	}
+
+	public int charToInt(char c) {
+      return (int) c - 97;
+    }
+
+    public char intToChar(int i) {
+      return (char) (i + 97);
+    }
 
 
 
