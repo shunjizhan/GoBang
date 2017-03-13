@@ -36,8 +36,26 @@ public class Player {
 		this.updatePotentialPositions(chessStatus);
 		this.printPotentialPositions();
 
+		int maxScore = -1;
+		int currentScore;
+		int bestPosition[] = new int[2];
+		for (int[] position : this.nextPositions) {
+			currentScore = this.getScore(position);
+			if (currentScore > maxScore) {
+				maxScore = currentScore;
+				bestPosition = position;
+			}
+		}
 
-		return this.randomPosition(chessStatus);
+		int temp[] = new int[2];
+		temp[0] = bestPosition[1];
+		temp[1] = bestPosition[0] + 1;
+		System.out.print("bestPosition: " + Arrays.toString(temp));
+		return temp;
+	}
+
+	public int getScore(int[] position) {
+		return 1;
 	}
 
 	public void updatePotentialPositions(int[][] chessStatus) {
@@ -55,14 +73,12 @@ public class Player {
 					position[0] = i;
 					position[1] = j;
 					if (this.isPotential(position, chessStatus)) {
-						System.out.println("position: " + Arrays.toString(position));
+						// System.out.println("position: " + Arrays.toString(position));
 						this.nextPositions.add(position);
 					}
 				}
 			}
 		}
-		// System.out.println("nextPositions: " + this.nextPositions.toString());
-
 	}
 
 	public void printPotentialPositions() {
@@ -126,9 +142,6 @@ public class Player {
   public char intToChar(int i) {
     return (char) (i + 97);
   }
-
-
-
 
 }
 
