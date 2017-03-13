@@ -57,9 +57,9 @@ class GobangGame:
       sys.stdout.write("%2d |" % (i + 1))
       for j in range(0, self.board_size):
         if self.board[i][j] == LIGHT:
-          sys.stdout.write(" X |")
-        elif self.board[i][j] == DARK:
           sys.stdout.write(" O |")
+        elif self.board[i][j] == DARK:
+          sys.stdout.write(" X |")
         else:
           sys.stdout.write("   |")
       sys.stdout.write("\n   +")
