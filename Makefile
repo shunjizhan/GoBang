@@ -16,4 +16,5 @@ test: AI executable
 	# python referee.py 26 ./executable ./AI
 
 run: AI
-	./AI -n 8 -d 3
+	ant compile
+	./AI -n 5
