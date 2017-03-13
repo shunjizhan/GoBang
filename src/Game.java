@@ -215,7 +215,7 @@ class Play {
     }
 
     public void aiPlay() {
-      int[] position = this.currentPlayer.decidePosition(this.board.chessStatus);
+      int[] position = this.currentPlayer.decidePosition(this.board.chessStatus).get(0);
       this.putChessOnBoard(position[0], position[1], this.currentPlayer.color);
     }
 

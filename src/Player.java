@@ -31,8 +31,19 @@ public class Player {
 		this.nextPositions = new ArrayList<int[]>();
 	}
 
-	public int[] decidePosition(int[][] chessStatus) {
-		System.out.println("deciding position... depth: " + this.depth);
+	public ArrayList<int[]> decidePosition(int[][] chessStatus) {
+		return this.decidePosition(chessStatus, this.depth, this.color);
+	}
+
+	public ArrayList<int[]> decidePosition(int[][] chessStatus, int depth, int color) {
+		if (depth == 0) {
+			return this.randomPosition(chessStatus);
+		}
+
+		// .get(0) : best position (int[2]) , .get(1)[0] : best score
+		ArrayList<int[]> best = new ArrayList<int[]>();
+
+		System.out.println("deciding position... depth: " + depth);
 		this.updatePotentialPositions(chessStatus);
 		this.printPotentialPositions();
 
@@ -44,9 +55,13 @@ public class Player {
 			int[][] newStatus = this.deepCopy(chessStatus);
 			newStatus[position[0]][position[1]] = color;
 
-			// evaluate this steps score
-			currentScore = this.getBoardScore(newStatus, this.color);
-			System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
+			if (depth == 1) {
+				// evaluate this steps score
+				currentScore = this.getBoardScore(newStatus, color);
+				System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
+			} else {
+				currentScore = (-1) * this.decidePosition(newStatus, depth - 1, color * (-1)).get(1)[0];
+			}
 
 			if (currentScore > maxScore) {
 				maxScore = currentScore;
@@ -56,11 +71,17 @@ public class Player {
 		}
 
 		int temp[] = new int[2];
+		int temp2[] = new int[1];
 		temp[0] = bestPosition[1];
 		temp[1] = bestPosition[0] + 1;
-		System.out.println("bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]));
-		return temp;
+		temp2[0] = maxScore;
+		System.out.println("bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
+
+		best.add(temp);
+		best.add(temp2);
+		return best;
 	}
+
 
 	public int getBoardScore(int[][] newStatus, int color) {
 		/*************** ASSERT size >= 6 *******************/
@@ -276,7 +297,8 @@ public class Player {
 		return false;
 	}
 
-	public int[] randomPosition(int[][] chessStatus) {
+	public ArrayList<int[]> randomPosition(int[][] chessStatus) {
+		ArrayList<int[]> r = new ArrayList<int[]>();
 		int boardSize = chessStatus.length;
 		int random1, random2;
 		int[] result = new int[2];
@@ -288,7 +310,8 @@ public class Player {
 				result[0] = random2;		// letter
 				result[1] = (random1 + 1);	// number
 				System.out.println("decided: " + intToChar(random2) + result[1]);
-				return result;
+				r.add(result);
+				return r;
 			}
 		}	
 	}
