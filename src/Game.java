@@ -88,8 +88,8 @@ class Play {
         this.p2 = new Player(-1, true, depth);   // white computer
       } else {
         // System.out.println("2222222");
-        this.p1 = new Player(-1, true, depth);   // black computer
-        this.p2 = new Player(1);          // white human
+        this.p1 = new Player(1, true, depth);   // black computer
+        this.p2 = new Player(-1);          // white human
       }
       this.board.initialize();
       this.currentPlayer = p1;

@@ -40,11 +40,19 @@ public class Player {
 		int currentScore;
 		int bestPosition[] = new int[2];
 		for (int[] position : this.nextPositions) {
-			currentScore = this.getBoardScore(chessStatus, position, this.color, this.depth);
+			// emulate next move
+			int[][] newStatus = this.deepCopy(chessStatus);
+			newStatus[position[0]][position[1]] = color;
+
+			// evaluate this steps score
+			currentScore = this.getBoardScore(newStatus, this.color);
+			System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
+
 			if (currentScore > maxScore) {
 				maxScore = currentScore;
 				bestPosition = position;
 			}
+
 		}
 
 		int temp[] = new int[2];
@@ -54,12 +62,8 @@ public class Player {
 		return temp;
 	}
 
-	public int getBoardScore(int[][] chessStatus, int[] position, int color, int depth) {
+	public int getBoardScore(int[][] newStatus, int color) {
 		/*************** ASSERT size >= 6 *******************/
-
-		// emulate next move
-		int[][] newStatus = this.deepCopy(chessStatus);
-		newStatus[position[0]][position[1]] = color;
 
 		int size = newStatus.length;
 		int good = 0;
@@ -143,7 +147,6 @@ public class Player {
 			}
 		}
 
-		System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0]+1) + " Score: " + Integer.toString(good - bad));
 		return good - bad + 1000;
 	}
 
@@ -213,8 +216,12 @@ public class Player {
 		return copy;
 	}
 
+	// change to return int[][]
 	public void updatePotentialPositions(int[][] chessStatus) {
+					// System.out.println(this.nextPositions.size() == 0);
+
 		if (this.nextPositions.size() == 0 && this.color == 1) {
+			// System.out.println("first position!!!!!!!");
 			int position[] = new int[2];
 			int center = chessStatus.length / 2;		// in the center
 			position[0] = center;
