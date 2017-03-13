@@ -54,14 +54,12 @@ class Play {
     public Player p1, p2;
     public Player currentPlayer;
     public boolean humanFirst;
-    public int depth;
     public BufferedReader br;
 
     Play() {
     	this.board = new ChessBoard(15);
       this.humanFirst = true;
-      this.depth = 2;
-      this.initializeGame();
+      this.initializeGame(2);
     }
 
     Play(int size) {
@@ -70,8 +68,7 @@ class Play {
 
     	this.board = new ChessBoard(size);
       this.humanFirst = true;
-      this.depth = 2;
-      this.initializeGame(); 
+      this.initializeGame(2); 
     }
 
     Play(int size, boolean first, int depth) {
@@ -80,26 +77,25 @@ class Play {
 
       this.board = new ChessBoard(size);
       this.humanFirst = first;
-      this.depth = depth;
-      this.initializeGame();      
+      this.initializeGame(depth);      
     }
 
-    public void initializeGame() {
+    public void initializeGame(int depth) {
 	    this.br = new BufferedReader(new InputStreamReader(System.in));
       if (this.humanFirst) {
         // System.out.println("1111111");
         this.p1 = new Player(1);          // black human
-        this.p2 = new Player(-1, true);   // white computer
+        this.p2 = new Player(-1, true, depth);   // white computer
       } else {
         // System.out.println("2222222");
-        this.p1 = new Player(-1, true);   // black computer
+        this.p1 = new Player(-1, true, depth);   // black computer
         this.p2 = new Player(1);          // white human
       }
       this.board.initialize();
       this.currentPlayer = p1;
 
       System.out.print("Size: " + this.board.size + ", ");
-    	System.out.println("depth: " + this.depth);
+    	System.out.println("depth: " + depth);
     	this.board.printBoard();
     	System.out.println("Move played: --");
     }
@@ -148,10 +144,12 @@ class Play {
 
         if (this.board.checkGameOver(x, y, color) == true) {
           this.printResult(color);
-          this.initializeGame();
+          System.out.println("Game Over!");
+          System.exit(0);
         } else if (this.board.checkDraw() == true) {
           System.out.println("Draw!");
-          this.initializeGame();  
+          System.out.println("Game Over!");
+          System.exit(0);  
         }
       }
     }
