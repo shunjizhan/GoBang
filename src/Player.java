@@ -68,14 +68,34 @@ public class Player {
 	public void printPotentialPositions() {
 		System.out.print("potential positions: ");
 		for (int[] p : this.nextPositions) {
-			// System.out.print(intToChar(position[1]) + (position[0] + 1) + " ");
-			System.out.print(Arrays.toString(p));
+			char letter = intToChar(p[1]);
+			int number = p[0] + 1;
+			System.out.print(letter + Integer.toString(number) + " ");
+			// System.out.print(Arrays.toString(p));
 		}
 		System.out.println(" ");
 	}
 
 	public boolean isPotential(int[] position, int[][] chessStatus) {
-		return true;
+		int maxDistance = 2;
+		int x = position[0];
+		int y = position[1];
+		int leftTopX = x - maxDistance;
+		int leftTopY = y - maxDistance;
+
+		// go through all distance within limit
+		for (int i = leftTopX; i < leftTopX + 2 * maxDistance + 1; i++) {
+			for (int j = leftTopY; j < leftTopY + 2 * maxDistance + 1; j++) {
+				if (
+					  this.isInBoard(i, j, chessStatus.length) &&
+						chessStatus[x][y] == 0 &&
+					  chessStatus[i][j] != 0
+					) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public int[] randomPosition(int[][] chessStatus) {
@@ -93,6 +113,10 @@ public class Player {
 				return result;
 			}
 		}	
+	}
+
+	public boolean isInBoard(int x, int y, int size) {
+		return (x >= 0 && y >= 0 && x < size && y < size);
 	}
 
 	public int charToInt(char c) {
