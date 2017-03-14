@@ -31,12 +31,13 @@ public class Player {
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus) {
-		if (this.nextPositions.size() < 30) {
+		if (this.nextPositions.size() < 10) {
+			return this.decidePosition(chessStatus, this.depth + 2, this.color);
+		} else if (this.nextPositions.size() < 35) {
 			return this.decidePosition(chessStatus, this.depth + 1, this.color);
 		} else {
 			return this.decidePosition(chessStatus, this.depth, this.color);
 		}
-		
 	}
 
 	public double weight(int[] position, int size) {
