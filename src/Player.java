@@ -60,11 +60,11 @@ public class Player {
 		// .get(0) : best position (int[2]) , .get(1)[0] : best score
 		ArrayList<int[]> best = new ArrayList<int[]>();
 
-		System.out.println("deciding position... depth: " + depth);
+		// System.out.println("deciding position... depth: " + depth);
 		this.updatePotentialPositions(chessStatus);
 		// System.out.println("deciding in: " + this.nextPositions.size() + "position");
 
-		this.printPotentialPositions();
+		// this.printPotentialPositions();
 
 		double maxScore = -99999.0;
 		double currentScore;
@@ -399,15 +399,15 @@ public class Player {
 			for (int i = 0; i < chessStatus.length; i++) {
 				for (int j = 0; j < chessStatus.length; j++) {
 					int position[] = new int[2];
-					System.out.print("checking: " + intToChar(j) + i + ' ');
+					// System.out.print("checking: " + intToChar(j) + i + ' ');
 					position[0] = i;
 					position[1] = j;
 					if (this.isPotential(position, chessStatus)) {
 						// System.out.println("position: " + Arrays.toString(position));
-						System.out.println("good!");
+						// System.out.println("good!");
 						this.nextPositions.add(position);
 					} else {
-						System.out.println("bad!");
+						// System.out.println("bad!");
 					}	
 				}
 			}
