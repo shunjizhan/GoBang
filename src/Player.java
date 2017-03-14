@@ -47,7 +47,7 @@ public class Player {
 
 		double distance = Math.sqrt ((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY)) + 1;
 
-		return (10 / distance + 1000.0) / 1000.0;
+		return (10 / distance + 10000.0) / 10000.0;
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus, int depth, int color) {
@@ -76,7 +76,7 @@ public class Player {
 
 			if (depth == 1) {
 				// evaluate this steps score
-				System.out.println("current weight: " + this.weight(position, size));
+				// System.out.println("current weight: " + this.weight(position, size));
 				currentScore = this.getBoardScore(newStatus, color) * this.weight(position, size);
 				// System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
 			} else {
@@ -333,7 +333,7 @@ public class Player {
 		score += 10 * subStringNum(s, "OX----"); 
 
 		// 死四 -5
-		score += (-20) * subStringNum(s, "OXXXXO");
+		score += (-200) * subStringNum(s, "OXXXXO");
 		score += (-20) * subStringNum(s, "OXXX-O");
 		score += (-20) * subStringNum(s, "OXX-XO");
 		score += (-20) * subStringNum(s, "OX-XXO");

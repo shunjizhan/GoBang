@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar Gobang.jar -d 2 $@
+java -jar Gobang.jar -d 3 $@
