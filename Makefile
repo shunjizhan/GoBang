@@ -9,8 +9,8 @@ test: AI executable
 	# python referee.py 8 ./AI ./executable
 	# python referee.py 8 ./executable ./AI
 	# python referee.py 15 ./AI ./AI
-	python referee.py 15 ./AI ./executable
-	# python referee.py 15 ./executable ./AI
+	# python referee.py 15 ./AI ./executable
+	python referee.py 15 ./executable ./AI
 	# python referee.py 26 ./AI ./AI
 	# python referee.py 26 ./AI ./executable
 	# python referee.py 26 ./executable ./AI

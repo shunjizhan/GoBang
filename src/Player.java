@@ -12,14 +12,14 @@ public class Player {
 	public Player() {
 		this.color = 1;
 		this.isAI = false;
-		this.depth = 3;
+		this.depth = 2;
 		this.nextPositions = new ArrayList<int[]>();
 	}
 
 	public Player(int color) {
 		this.color = color;
 		this.isAI = false;
-		this.depth = 31;
+		this.depth = 2;
 		this.nextPositions = new ArrayList<int[]>();
 	}	
 
@@ -180,43 +180,166 @@ public class Player {
 			return "-";
 	}
 
-	public int evaluate(String s, int color) {
-		// System.out.print("evaluating: " + s + " " + Integer.toString(color) + " score: ");
-		if (color == 1) {
-			int totalScore = 0;
-			int subScore = 1;
-			for (int i = 0; i < s.length(); i++) {
-				char c = s.charAt(i);
-				if (c == 'X') {
-					subScore *= 6;
-				} else if (c == '-') {
-					subScore *= 2;
-				} else if (c == 'O'){
-					totalScore += subScore;
-					subScore = 1;
-				}
-			}
-			totalScore += subScore;
-			// System.out.println(totalScore);
-			return totalScore;
-		} else {
-			int totalScore = 0;
-			int subScore = 1;
-			for (int i = 0; i < s.length(); i++) {
-				char c = s.charAt(i);
-				if (c == 'O') {
-					subScore *= 6;
-				} else if (c == '-') {
-					subScore *= 2;
-				} else if (c == 'X') {
-					totalScore += subScore;
-					subScore = 1;
-				}
-			}
-			totalScore += subScore;
-			// System.out.println(totalScore);
-			return totalScore;
+	String modify(String s) {
+		String result = "";
+		for (char c : s.toCharArray()) {
+			if (c == 'X')
+				result += 'O';
+			if (c == 'O')
+				result += "X";
+			else
+				result += "-";
 		}
+		return result;
+	}
+
+	public char intToXO(int i) {
+		if (i == 1)
+			return 'X';
+		if (i == -1)
+			return 'O';
+		if (i == 0)
+			return '-';
+		else 
+			return '#';
+	}	
+
+	public int evaluate(String s, int color) {
+		// System.out.println("evalueting: " + s);
+		if (color == -1) {
+			s = this.modify(s);
+		}
+
+		int length = s.length();
+		if (length < 6) {
+			for (int j = 6; j > length; j--) {
+				s += "O";
+			}
+		}
+
+		int score = 0;
+
+		// 五连 999999
+		score += 999999 * subStringNum(s, "XXXXX");
+
+		// 活四 10000
+		score += 10000 * subStringNum(s, "-XXXX-"); 
+
+		// 冲四 5000
+		score += 5000 * subStringNum(s, "-XXXXO"); 
+		score += 5000 * subStringNum(s, "X-XXXO"); 
+		score += 5000 * subStringNum(s, "XX-XXO"); 
+		score += 5000 * subStringNum(s, "XXX-XO"); 
+		score += 5000 * subStringNum(s, "XXXX-O"); 
+		score += 5000 * subStringNum(s, "O-XXXX"); 
+		score += 5000 * subStringNum(s, "OX-XXX"); 
+		score += 5000 * subStringNum(s, "OXX-XX"); 
+		score += 5000 * subStringNum(s, "OXXX-X"); 
+		score += 5000 * subStringNum(s, "OXXXX-");
+
+		// 活三 1000
+		score += 1000 * subStringNum(s, "-XXX--"); 
+		score += 1000 * subStringNum(s, "-XX-X-"); 
+		score += 1000 * subStringNum(s, "-X-XX-"); 
+		score += 1000 * subStringNum(s, "--XXX-"); 
+
+		// 眠三 500
+		score += 500 * subStringNum(s, "OXXX--"); 
+		score += 500 * subStringNum(s, "OXX-X-"); 
+		score += 500 * subStringNum(s, "OX-XX-"); 
+		score += 500 * subStringNum(s, "O-XXX-");
+		score += 500 * subStringNum(s, "OXX--X"); 
+		score += 500 * subStringNum(s, "OX-X-X"); 
+		score += 500 * subStringNum(s, "O-XX-X"); 
+		score += 500 * subStringNum(s, "OX--XX"); 
+
+		score += 500 * subStringNum(s, "XXX--O"); 
+		score += 500 * subStringNum(s, "XX-X-O"); 
+		score += 500 * subStringNum(s, "X-XX-O"); 
+		score += 500 * subStringNum(s, "-XXX-O");
+		score += 500 * subStringNum(s, "XX--XO"); 
+		score += 500 * subStringNum(s, "X-X-XO"); 
+		score += 500 * subStringNum(s, "-XX-XO"); 
+		score += 500 * subStringNum(s, "X--XXO");
+
+		// 活二 100
+		score += 100 * subStringNum(s, "--XX--"); 
+		score += 100 * subStringNum(s, "-X-X--"); 
+		score += 100 * subStringNum(s, "-XX---"); 
+		score += 100 * subStringNum(s, "-X--X-");
+		score += 100 * subStringNum(s, "--X-X-");
+		score += 100 * subStringNum(s, "---XX-"); 
+
+		// 眠二 10
+		score += 50 * subStringNum(s, "OXX---"); 
+		score += 50 * subStringNum(s, "OX-X--"); 
+		score += 50 * subStringNum(s, "O-XX--"); 
+		score += 50 * subStringNum(s, "O---XX"); 
+		score += 50 * subStringNum(s, "OX--X-"); 
+		score += 50 * subStringNum(s, "O-X-X-"); 
+		score += 50 * subStringNum(s, "O--XX-");
+		score += 50 * subStringNum(s, "OX---X"); 
+		score += 50 * subStringNum(s, "O-X--X"); 
+		score += 50 * subStringNum(s, "O--X-X"); 
+		score += 50 * subStringNum(s, "XX---O"); 
+		score += 50 * subStringNum(s, "X-X--O"); 
+		score += 50 * subStringNum(s, "X--X-O"); 
+		score += 50 * subStringNum(s, "X---XO"); 
+		score += 50 * subStringNum(s, "-XX--O"); 
+		score += 50 * subStringNum(s, "-X-X-O"); 
+		score += 50 * subStringNum(s, "-X--XO"); 
+		score += 50 * subStringNum(s, "--XX-O"); 
+		score += 50 * subStringNum(s, "--X-XO"); 
+		score += 50 * subStringNum(s, "---XXO");
+
+		// 活一 100
+		score += 30 * subStringNum(s, "----X-");
+		score += 30 * subStringNum(s, "---X--"); 
+		score += 30 * subStringNum(s, "--X---"); 
+		score += 30 * subStringNum(s, "-X----"); 
+
+		// 眠一 100
+		score += 10 * subStringNum(s, "----XO");
+		score += 10 * subStringNum(s, "---X-O"); 
+		score += 10 * subStringNum(s, "--X--O"); 
+		score += 10 * subStringNum(s, "-X---O"); 		
+		score += 10 * subStringNum(s, "O---X-");
+		score += 10 * subStringNum(s, "O--X--"); 
+		score += 10 * subStringNum(s, "O-X---"); 
+		score += 10 * subStringNum(s, "OX----"); 
+
+		// 死四 -5
+		score += (-10) * subStringNum(s, "OXXXXO");
+		score += (-10) * subStringNum(s, "OXXX-O");
+		score += (-10) * subStringNum(s, "OXX-XO");
+		score += (-10) * subStringNum(s, "OX-XXO");
+		score += (-10) * subStringNum(s, "O-XXXO");
+
+		// 死三 -5
+		score += (-10) * subStringNum(s, "OXXXO");
+		score += (-10) * subStringNum(s, "OXX-O");
+		score += (-10) * subStringNum(s, "OX-XO");
+		score += (-10) * subStringNum(s, "O-XXO");
+
+		// 死二 -5
+		score += (-10) * subStringNum(s, "OXXO");		
+		score += (-10) * subStringNum(s, "OX-O");		
+		score += (-10) * subStringNum(s, "O-XO");		
+
+		// 死二 -5
+		score += (-10) * subStringNum(s, "OXO");
+		score += (-10) * subStringNum(s, "O-O");
+
+		return score;
+	}
+
+	public int subStringNum(String str, String sub) {
+		int count = 0;
+		while (str.indexOf(sub) > -1) {
+		    str = str.replaceFirst(sub, "");
+		    count++;
+		}
+		return count ;
 	}
 
 	public void printStringArray(ArrayList<String> arr) {
@@ -339,22 +462,29 @@ public class Player {
 		ArrayList<String> diagnal2 = new ArrayList<String>();
 		String s;
 
+		int good = 0;
+		int bad = 0;
+
 		// rows
 		for (int i = 0; i < size; i++) {
 			s = "";
 			for (int j = 0; j < size; j++) {
-				s += Integer.toString(newStatus[i][j]);
+				s += this.intToXO(newStatus[i][j]);
 			}
-			rows.add(s);
+			good += this.evaluate(s, color);
+			bad += this.evaluate(s, color * (-1));
+			// rows.add(s);
 		}
 
 		// columes
 		for (int i = 0; i < size; i++) {
 			s = "";
 			for (int j = 0; j < size; j++) {
-				s += Integer.toString(newStatus[j][i]);
+				s += this.intToXO(newStatus[j][i]);
 			}
-			columes.add(s);
+			good += this.evaluate(s, color);
+			bad += this.evaluate(s, color * (-1));
+			// columes.add(s);
 		}
 
 		// diagnal 1
@@ -364,13 +494,15 @@ public class Player {
 			int y = i;
 			for (int j = 0; j < size - i; j++) {
 				if (this.isInBoard(x, y, size)) {
-					s += newStatus[x][y];
+					s += this.intToXO(newStatus[x][y]);
 					x++;
 					y++;
 				}
 			}
+			good += this.evaluate(s, color);
+			bad += this.evaluate(s, color * (-1));
 			
-			diagnal1.add(s);
+			// diagnal1.add(s);
 		}
 		for (int i = 1; i < size; i++) {
 			s = "";
@@ -378,12 +510,15 @@ public class Player {
 			int y = 0;
 			for (int j = 0; j < size - i; j++) {
 				if (this.isInBoard(x, y, size)) {
-					s += newStatus[x][y];
+					// System.out.println("intTOXO: " + newStatus[x][y] + ' ' + this.intToXO(newStatus[x][y]));
+					s += this.intToXO(newStatus[x][y]);
 					x++;
 					y++;
 				}
 			}
-			diagnal1.add(s);
+			good += this.evaluate(s, color);
+			bad += this.evaluate(s, color * (-1));
+			// diagnal1.add(s);
 		}
 
 		// diagnal 2
@@ -393,12 +528,14 @@ public class Player {
 			int y = 0;
 			for (int j = 0; j < size - i; j++) {
 				if (this.isInBoard(x, y, size)) {
-					s += newStatus[x][y];
+					s += this.intToXO(newStatus[x][y]);
 					x--;
 					y++;
 				}
 			}
-			diagnal2.add(s);
+			good += this.evaluate(s, color);
+			bad += this.evaluate(s, color * (-1));
+			// diagnal2.add(s);
 		}
 		for (int i = 1; i < size; i++) {
 			s = "";
@@ -406,31 +543,70 @@ public class Player {
 			int y = i;
 			for (int j = 0; j < size - i; j++) {
 				if (this.isInBoard(x, y, size)) {
-					s += newStatus[x][y];
+					s += this.intToXO(newStatus[x][y]);
 					x--;
 					y++;
 				}
 			}
-			diagnal2.add(s);
+			good += this.evaluate(s, color);
+			bad += this.evaluate(s, color * (-1));
+			// diagnal2.add(s);
 		}
 
 		
-		System.out.println("rows------------------");
-		this.printStringArray(rows);
-		System.out.println("Columes---------------");
-		this.printStringArray(columes);
-		System.out.println("diagnal 1---------------");
-		this.printStringArray(diagnal1);		
-		System.out.println("diagnal 2---------------");
-		this.printStringArray(diagnal2);
+		// System.out.println("rows------------------");
+		// this.printStringArray(rows);
+		// System.out.println("Columes---------------");
+		// this.printStringArray(columes);
+		// System.out.println("diagnal 1---------------");
+		// this.printStringArray(diagnal1);		
+		// System.out.println("diagnal 2---------------");
+		// this.printStringArray(diagnal2);
 
-
-		return 1;
+		// System.out.println(Integer.toString(good) + ' ' + Integer.toString(bad));
+		return good - bad;
 	}
 
 }
 
-
+	// public int evaluate(String s, int color) {
+	// 	// System.out.print("evaluating: " + s + " " + Integer.toString(color) + " score: ");
+	// 	if (color == 1) {
+	// 		int totalScore = 0;
+	// 		int subScore = 1;
+	// 		for (int i = 0; i < s.length(); i++) {
+	// 			char c = s.charAt(i);
+	// 			if (c == 'X') {
+	// 				subScore *= 6;
+	// 			} else if (c == '-') {
+	// 				subScore *= 2;
+	// 			} else if (c == 'O'){
+	// 				totalScore += subScore;
+	// 				subScore = 1;
+	// 			}
+	// 		}
+	// 		totalScore += subScore;
+	// 		// System.out.println(totalScore);
+	// 		return totalScore;
+	// 	} else {
+	// 		int totalScore = 0;
+	// 		int subScore = 1;
+	// 		for (int i = 0; i < s.length(); i++) {
+	// 			char c = s.charAt(i);
+	// 			if (c == 'O') {
+	// 				subScore *= 6;
+	// 			} else if (c == '-') {
+	// 				subScore *= 2;
+	// 			} else if (c == 'X') {
+	// 				totalScore += subScore;
+	// 				subScore = 1;
+	// 			}
+	// 		}
+	// 		totalScore += subScore;
+	// 		// System.out.println(totalScore);
+	// 		return totalScore;
+	// 	}
+	// }
 
 
 

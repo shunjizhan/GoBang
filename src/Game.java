@@ -44,8 +44,8 @@ class InputHelper {
 
   InputHelper() {
     this.first = true;
-    this.size = 6;
-    this.depth = 1;
+    this.size = 11;
+    this.depth = 2;
   }
 }
 
@@ -55,7 +55,7 @@ class Play {
     public Player currentPlayer;
     public boolean humanFirst;
     public BufferedReader br;
-    public final int defaultDepth = 3;
+    public final int defaultDepth = 2;
 
     Play() {
     	System.out.println("Play()");
