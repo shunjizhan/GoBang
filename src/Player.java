@@ -69,7 +69,7 @@ public class Player {
 
 		// this.printPotentialPositions();
 
-		double maxScore = -999999999;
+		double maxScore = -99999999;
 		double currentScore;
 		int bestPosition[] = new int[2];
 		for (int[] position : this.nextPositions) {
@@ -156,12 +156,12 @@ public class Player {
 
 		// 五连 999999
 		if (subStringNum(s, "XXXXX") > 0) {
-			return 909999999;
+			return 90999999;
 		}
 
 		// 活四 10000
 		if (subStringNum(s, "-XXXX-") > 0) {
-			return 9999999;
+			return 999999;
 		}
 
 		// 冲四 5000
