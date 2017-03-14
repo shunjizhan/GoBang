@@ -12,7 +12,7 @@ public class Player {
 	public Player() {
 		this.color = 1;
 		this.isAI = false;
-		this.depth = 2;
+		this.depth = 3;
 		this.nextPositions = new ArrayList<int[]>();
 	}
 
@@ -31,8 +31,23 @@ public class Player {
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus) {
-		// System.out.print("!!!!!!!!!!!!!!!!this.depth: " + this.depth);
-		return this.decidePosition(chessStatus, this.depth, this.color);
+		if (this.nextPositions.size() < 30) {
+			return this.decidePosition(chessStatus, this.depth + 1, this.color);
+		} else {
+			return this.decidePosition(chessStatus, this.depth, this.color);
+		}
+		
+	}
+
+	public int weight(int[] position, int size) {
+		int centerX = size / 2;
+		int centerY = size / 2;
+		int x = position[0];
+		int y = position[1];
+
+		int distance = (int) Math.sqrt ((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY)) + 1;
+
+		return 100 / distance;
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus, int depth, int color) {
@@ -40,11 +55,15 @@ public class Player {
 			return this.randomPosition(chessStatus);
 		}
 
+		int size = chessStatus.length;
+
 		// .get(0) : best position (int[2]) , .get(1)[0] : best score
 		ArrayList<int[]> best = new ArrayList<int[]>();
 
-		// System.out.println("deciding position... depth: " + depth);
+		System.out.println("deciding position... depth: " + depth);
 		this.updatePotentialPositions(chessStatus);
+		// System.out.println("deciding in: " + this.nextPositions.size() + "position");
+
 		// this.printPotentialPositions();
 
 		int maxScore = -99999;
@@ -57,7 +76,8 @@ public class Player {
 
 			if (depth == 1) {
 				// evaluate this steps score
-				currentScore = this.getBoardScore(newStatus, color);
+				System.out.println("current weight: " + this.weight(position, size));
+				currentScore = this.getBoardScore(newStatus, color) * this.weight(position, size);
 				// System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
 			} else {
 				currentScore = (-1) * this.decidePosition(newStatus, depth - 1, color * (-1)).get(1)[0];
@@ -220,10 +240,14 @@ public class Player {
 		int score = 0;
 
 		// 五连 999999
-		score += 999999 * subStringNum(s, "XXXXX");
+		if (subStringNum(s, "XXXXX") > 0) {
+			return 99999999;
+		}
 
 		// 活四 10000
-		score += 10000 * subStringNum(s, "-XXXX-"); 
+		if (subStringNum(s, "-XXXX-") > 0) {
+			return 9999999;
+		}
 
 		// 冲四 5000
 		score += 5000 * subStringNum(s, "-XXXXO"); 
@@ -362,8 +386,7 @@ public class Player {
 
 	// change to return int[][]
 	public void updatePotentialPositions(int[][] chessStatus) {
-					// System.out.println(this.nextPositions.size() == 0);
-
+		// System.out.println(this.nextPositions.size() == 0);
 		if (this.nextPositions.size() == 0 && this.color == 1) {
 			// System.out.println("first position!!!!!!!");
 			int position[] = new int[2];
@@ -456,10 +479,10 @@ public class Player {
 
 		int size = newStatus.length;
 
-		ArrayList<String> rows = new ArrayList<String>();
-		ArrayList<String> columes = new ArrayList<String>();
-		ArrayList<String> diagnal1 = new ArrayList<String>();
-		ArrayList<String> diagnal2 = new ArrayList<String>();
+		// ArrayList<String> rows = new ArrayList<String>();
+		// ArrayList<String> columes = new ArrayList<String>();
+		// ArrayList<String> diagnal1 = new ArrayList<String>();
+		// ArrayList<String> diagnal2 = new ArrayList<String>();
 		String s;
 
 		int good = 0;
