@@ -64,7 +64,7 @@ public class Player {
 		this.updatePotentialPositions(chessStatus);
 		// System.out.println("deciding in: " + this.nextPositions.size() + "position");
 
-		// this.printPotentialPositions();
+		this.printPotentialPositions();
 
 		double maxScore = -99999.0;
 		double currentScore;
@@ -74,7 +74,7 @@ public class Player {
 			int[][] newStatus = this.deepCopy(chessStatus);
 			newStatus[position[0]][position[1]] = color;
 
-			if (depth == 1) {
+			if (depth == 1 || this.nextPositions.size() <= 0) {
 				// evaluate this steps score
 				// System.out.println("current weight: " + this.weight(position, size));
 				currentScore = this.getBoardScore(newStatus, color) * this.weight(position, size);
@@ -399,12 +399,16 @@ public class Player {
 			for (int i = 0; i < chessStatus.length; i++) {
 				for (int j = 0; j < chessStatus.length; j++) {
 					int position[] = new int[2];
+					System.out.print("checking: " + intToChar(j) + i + ' ');
 					position[0] = i;
 					position[1] = j;
 					if (this.isPotential(position, chessStatus)) {
 						// System.out.println("position: " + Arrays.toString(position));
+						System.out.println("good!");
 						this.nextPositions.add(position);
-					}
+					} else {
+						System.out.println("bad!");
+					}	
 				}
 			}
 		}
@@ -422,18 +426,23 @@ public class Player {
 	}
 
 	public boolean isPotential(int[] position, int[][] chessStatus) {
+
 		int maxDistance = 1;
 		int x = position[0];
 		int y = position[1];
 		int leftTopX = x - maxDistance;
 		int leftTopY = y - maxDistance;
 
+		// System.out.println("checking: " + this.intToChar(position[1]) + position[0]);
+		// System.out.println("in board: " + this.isInBoard(i, j, chessStatus.length));
+
+
 		// go through all distance within limit
 		for (int i = leftTopX; i < leftTopX + 2 * maxDistance + 1; i++) {
 			for (int j = leftTopY; j < leftTopY + 2 * maxDistance + 1; j++) {
 				if (
 					  this.isInBoard(i, j, chessStatus.length) &&
-						chessStatus[x][y] == 0 &&
+					  chessStatus[x][y] == 0 &&
 					  chessStatus[i][j] != 0
 					) {
 					return true;
