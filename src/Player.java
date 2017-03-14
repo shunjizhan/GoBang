@@ -39,15 +39,15 @@ public class Player {
 		
 	}
 
-	public int weight(int[] position, int size) {
-		int centerX = size / 2;
-		int centerY = size / 2;
-		int x = position[0];
-		int y = position[1];
+	public double weight(int[] position, int size) {
+		double centerX = size / 2;
+		double centerY = size / 2;
+		double x = position[0];
+		double y = position[1];
 
-		int distance = (int) Math.sqrt ((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY)) + 1;
+		double distance = Math.sqrt ((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY)) + 1;
 
-		return 100 / distance;
+		return (10 / distance + 1000.0) / 1000.0;
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus, int depth, int color) {
@@ -66,8 +66,8 @@ public class Player {
 
 		// this.printPotentialPositions();
 
-		int maxScore = -99999;
-		int currentScore;
+		double maxScore = -99999.0;
+		double currentScore;
 		int bestPosition[] = new int[2];
 		for (int[] position : this.nextPositions) {
 			// emulate next move
@@ -94,7 +94,7 @@ public class Player {
 		int temp2[] = new int[1];
 		temp[0] = bestPosition[1];
 		temp[1] = bestPosition[0] + 1;
-		temp2[0] = maxScore;
+		temp2[0] = (int) maxScore;
 		// System.out.println("bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
 
 		best.add(temp);
@@ -333,26 +333,26 @@ public class Player {
 		score += 10 * subStringNum(s, "OX----"); 
 
 		// 死四 -5
-		score += (-10) * subStringNum(s, "OXXXXO");
-		score += (-10) * subStringNum(s, "OXXX-O");
-		score += (-10) * subStringNum(s, "OXX-XO");
-		score += (-10) * subStringNum(s, "OX-XXO");
-		score += (-10) * subStringNum(s, "O-XXXO");
+		score += (-20) * subStringNum(s, "OXXXXO");
+		score += (-20) * subStringNum(s, "OXXX-O");
+		score += (-20) * subStringNum(s, "OXX-XO");
+		score += (-20) * subStringNum(s, "OX-XXO");
+		score += (-20) * subStringNum(s, "O-XXXO");
 
 		// 死三 -5
-		score += (-10) * subStringNum(s, "OXXXO");
-		score += (-10) * subStringNum(s, "OXX-O");
-		score += (-10) * subStringNum(s, "OX-XO");
-		score += (-10) * subStringNum(s, "O-XXO");
+		score += (-20) * subStringNum(s, "OXXXO");
+		score += (-20) * subStringNum(s, "OXX-O");
+		score += (-20) * subStringNum(s, "OX-XO");
+		score += (-20) * subStringNum(s, "O-XXO");
 
 		// 死二 -5
-		score += (-10) * subStringNum(s, "OXXO");		
-		score += (-10) * subStringNum(s, "OX-O");		
-		score += (-10) * subStringNum(s, "O-XO");		
+		score += (-20) * subStringNum(s, "OXXO");		
+		score += (-20) * subStringNum(s, "OX-O");		
+		score += (-20) * subStringNum(s, "O-XO");		
 
 		// 死二 -5
-		score += (-10) * subStringNum(s, "OXO");
-		score += (-10) * subStringNum(s, "O-O");
+		score += (-20) * subStringNum(s, "OXO");
+		score += (-20) * subStringNum(s, "O-O");
 
 		return score;
 	}
