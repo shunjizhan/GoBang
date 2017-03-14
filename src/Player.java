@@ -61,9 +61,9 @@ public class Player {
 		// .get(0) : best position (int[2]) , .get(1)[0] : best score
 		ArrayList<int[]> best = new ArrayList<int[]>();
 
-		if (depth >= 2) {
-			System.out.println("deciding position... depth: " + depth);
-		}
+		// if (depth >= 2) {
+		// 	System.out.println("deciding position... depth: " + depth);
+		// }
 		this.updatePotentialPositions(chessStatus);
 		// System.out.println("deciding in: " + this.nextPositions.size() + "position");
 
