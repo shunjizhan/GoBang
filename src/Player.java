@@ -12,16 +12,15 @@ public class Player {
 	public Player() {
 		this.color = 1;
 		this.isAI = false;
-		this.depth = 2;
+		this.depth = 3;
 		this.nextPositions = new ArrayList<int[]>();
 	}
 
 	public Player(int color) {
 		this.color = color;
 		this.isAI = false;
-		this.depth = 2;
+		this.depth = 31;
 		this.nextPositions = new ArrayList<int[]>();
-
 	}	
 
 	public Player(int color, boolean isAI, int depth) {
@@ -32,6 +31,7 @@ public class Player {
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus) {
+		// System.out.print("!!!!!!!!!!!!!!!!this.depth: " + this.depth);
 		return this.decidePosition(chessStatus, this.depth, this.color);
 	}
 
@@ -43,9 +43,9 @@ public class Player {
 		// .get(0) : best position (int[2]) , .get(1)[0] : best score
 		ArrayList<int[]> best = new ArrayList<int[]>();
 
-		System.out.println("deciding position... depth: " + depth);
+		// System.out.println("deciding position... depth: " + depth);
 		this.updatePotentialPositions(chessStatus);
-		this.printPotentialPositions();
+		// this.printPotentialPositions();
 
 		int maxScore = -99999;
 		int currentScore;
@@ -58,7 +58,7 @@ public class Player {
 			if (depth == 1) {
 				// evaluate this steps score
 				currentScore = this.getBoardScore(newStatus, color);
-				System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
+				// System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
 			} else {
 				currentScore = (-1) * this.decidePosition(newStatus, depth - 1, color * (-1)).get(1)[0];
 			}
@@ -75,7 +75,7 @@ public class Player {
 		temp[0] = bestPosition[1];
 		temp[1] = bestPosition[0] + 1;
 		temp2[0] = maxScore;
-		System.out.println("bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
+		// System.out.println("bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
 
 		best.add(temp);
 		best.add(temp2);
@@ -83,93 +83,93 @@ public class Player {
 	}
 
 
-	public int getBoardScore(int[][] newStatus, int color) {
-		/*************** ASSERT size >= 6 *******************/
+	// public int getBoardScore(int[][] newStatus, int color) {
+	// 	/*************** ASSERT size >= 6 *******************/
 
-		int size = newStatus.length;
-		int good = 0;
-		int bad = 0;
-		String s = "";
+	// 	int size = newStatus.length;
+	// 	int good = 0;
+	// 	int bad = 0;
+	// 	String s = "";
 		
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				// left
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard(i, (j - k), size))
-						s += this.getSymble(newStatus[i][j - k]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));
+	// 	for (int i = 0; i < size; i++) {
+	// 		for (int j = 0; j < size; j++) {
+	// 			// left
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard(i, (j - k), size))
+	// 					s += this.getSymble(newStatus[i][j - k]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));
 
-				// right
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard(i, (j + k), size))
-						s += this.getSymble(newStatus[i][j + k]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));			
+	// 			// right
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard(i, (j + k), size))
+	// 					s += this.getSymble(newStatus[i][j + k]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));			
 
-				// up
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard((i - k), j, size))
-						s += this.getSymble(newStatus[i - k][j]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));	
+	// 			// up
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard((i - k), j, size))
+	// 					s += this.getSymble(newStatus[i - k][j]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));	
 
-				// down
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard((i + k), j, size))
-						s += this.getSymble(newStatus[i + k][j]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));	
+	// 			// down
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard((i + k), j, size))
+	// 					s += this.getSymble(newStatus[i + k][j]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));	
 
-				// 左上
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard((i - k), (j - k), size))
-						s += this.getSymble(newStatus[i - k][j - k]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));	
+	// 			// 左上
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard((i - k), (j - k), size))
+	// 					s += this.getSymble(newStatus[i - k][j - k]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));	
 
-				// 右上
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard((i - k), (j + k), size))
-						s += this.getSymble(newStatus[i - k][j + k]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));	
+	// 			// 右上
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard((i - k), (j + k), size))
+	// 					s += this.getSymble(newStatus[i - k][j + k]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));	
 
-				// 左下
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard((i + k), (j - k), size))
-						s += this.getSymble(newStatus[i + k][j - k]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));		
+	// 			// 左下
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard((i + k), (j - k), size))
+	// 					s += this.getSymble(newStatus[i + k][j - k]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));		
 
-				// 右下
-				s = "";
-				for (int k = 0; k < 6; k++) {
-					if (this.isInBoard((i + k), (j + k), size))
-						s += this.getSymble(newStatus[i + k][j + k]);
-				}
-				good += this.evaluate(s, color);
-				bad += this.evaluate(s, color * (-1));		
+	// 			// 右下
+	// 			s = "";
+	// 			for (int k = 0; k < 6; k++) {
+	// 				if (this.isInBoard((i + k), (j + k), size))
+	// 					s += this.getSymble(newStatus[i + k][j + k]);
+	// 			}
+	// 			good += this.evaluate(s, color);
+	// 			bad += this.evaluate(s, color * (-1));		
 
-			}
-		}
+	// 		}
+	// 	}
 
-		return good - bad + 1000;
-	}
+	// 	return good - bad + 1000;
+	// }
 
 	public String getSymble(int i) {
 		if (i == 1)
@@ -219,9 +219,9 @@ public class Player {
 		}
 	}
 
-	public void printStringArray(String[] arr) {
-		for (int k = 0; k < arr.length; k++) {
-			System.out.println(arr[k]);
+	public void printStringArray(ArrayList<String> arr) {
+		for (int k = 0; k < arr.size(); k++) {
+			System.out.println(arr.get(k));
 		}
 		System.out.println(" ");
 	}
@@ -276,7 +276,7 @@ public class Player {
 	}
 
 	public boolean isPotential(int[] position, int[][] chessStatus) {
-		int maxDistance = 2;
+		int maxDistance = 1;
 		int x = position[0];
 		int y = position[1];
 		int leftTopX = x - maxDistance;
@@ -328,115 +328,109 @@ public class Player {
     return (char) (i + 97);
   }
 
-}
+  	public int getBoardScore(int[][] newStatus, int color) {
+		/*************** ASSERT size >= 6 *******************/
 
-	// public int getBoardScore(int[][] chessStatus, int[] position, int color, int depth) {
-	// 	/*************** ASSERT size >= 6 *******************/
+		int size = newStatus.length;
 
-	// 	// emulate next move
-	// 	int[][] newStatus = this.deepCopy(chessStatus);
-	// 	newStatus[position[0]][position[1]] = color;
+		ArrayList<String> rows = new ArrayList<String>();
+		ArrayList<String> columes = new ArrayList<String>();
+		ArrayList<String> diagnal1 = new ArrayList<String>();
+		ArrayList<String> diagnal2 = new ArrayList<String>();
+		String s;
 
-	// 	int size = newStatus.length;
-	// 	String[] rows = new String[size];
-	// 	String[] columes = new String[size];
-	// 	String[] diagnal1 = new String[2 * (size - 5) - 1];
-	// 	String[] diagnal2 = new String[2 * (size - 5) - 1];
-	// 	String s;
+		// rows
+		for (int i = 0; i < size; i++) {
+			s = "";
+			for (int j = 0; j < size; j++) {
+				s += Integer.toString(newStatus[i][j]);
+			}
+			rows.add(s);
+		}
 
-	// 	// rows
-	// 	for (int i = 0; i < size; i++) {
-	// 		s = "";
-	// 		for (int j = 0; j < size; j++) {
-	// 			s += Integer.toString(newStatus[i][j]);
-	// 		}
-	// 		rows[i] = s;
-	// 	}
+		// columes
+		for (int i = 0; i < size; i++) {
+			s = "";
+			for (int j = 0; j < size; j++) {
+				s += Integer.toString(newStatus[j][i]);
+			}
+			columes.add(s);
+		}
 
-	// 	// columes
-	// 	for (int i = 0; i < size; i++) {
-	// 		s = "";
-	// 		for (int j = 0; j < size; j++) {
-	// 			s += Integer.toString(newStatus[j][i]);
-	// 		}
-	// 		columes[i] = s;
-	// 	}
+		// diagnal 1
+		for (int i = 0; i < size; i++) {
+			s = "";
+			int x = 0;
+			int y = i;
+			for (int j = 0; j < size - i; j++) {
+				if (this.isInBoard(x, y, size)) {
+					s += newStatus[x][y];
+					x++;
+					y++;
+				}
+			}
+			
+			diagnal1.add(s);
+		}
+		for (int i = 1; i < size; i++) {
+			s = "";
+			int x = i;
+			int y = 0;
+			for (int j = 0; j < size - i; j++) {
+				if (this.isInBoard(x, y, size)) {
+					s += newStatus[x][y];
+					x++;
+					y++;
+				}
+			}
+			diagnal1.add(s);
+		}
 
-	// 	// diagnal 1
-	// 	int count = 0;
-	// 	for (int i = 0; i <= size - 6; i++) {
-	// 		s = "";
-	// 		int x = 0;
-	// 		int y = i;
-	// 		for (int j = 0; j < 6; j++) {
-	// 			s += newStatus[x][y];
-	// 			x++;
-	// 			y++;
-	// 		}
-	// 		diagnal1[count] = s;
-	// 		count++;
-	// 	}
-	// 	for (int i = 1; i <= size - 6; i++) {
-	// 		s = "";
-	// 		int x = i;
-	// 		int y = 0;
-	// 		for (int j = 0; j < 6; j++) {
-	// 			s += newStatus[x][y];
-	// 			x++;
-	// 			y++;
-	// 		}
-	// 		diagnal1[count] = s;
-	// 		count++;
-	// 	}
-
-	// 	// diagnal 2
-	// 	count = 0;
-	// 	for (int i = size - 6; i < size; i++) {
-	// 		s = "";
-	// 		int x = 0;
-	// 		int y = i;
-	// 		for (int j = 0; j < 6; j++) {
-	// 			s += newStatus[x][y];
-	// 			x--;
-	// 			y++;
-	// 		}
-	// 		diagnal1[count] = s;
-	// 		count++;
-	// 	}
-	// 	for (int i = 1; i <= size - 6; i++) {
-	// 		s = "";
-	// 		int x = size;
-	// 		int y = i;
-	// 		for (int j = 0; j < 6; j++) {
-	// 			s += newStatus[x][y];
-	// 			x--;
-	// 			y++;
-	// 		}
-	// 		diagnal1[count] = s;
-	// 		count++;
-	// 	}
+		// diagnal 2
+		for (int i = 0; i < size; i++) {
+			s = "";
+			int x = size - i - 1;
+			int y = 0;
+			for (int j = 0; j < size - i; j++) {
+				if (this.isInBoard(x, y, size)) {
+					s += newStatus[x][y];
+					x--;
+					y++;
+				}
+			}
+			diagnal2.add(s);
+		}
+		for (int i = 1; i < size; i++) {
+			s = "";
+			int x = size - 1;
+			int y = i;
+			for (int j = 0; j < size - i; j++) {
+				if (this.isInBoard(x, y, size)) {
+					s += newStatus[x][y];
+					x--;
+					y++;
+				}
+			}
+			diagnal2.add(s);
+		}
 
 		
-	// 	System.out.println("rows------------------");
-	// 	this.printStringArray(rows);
-	// 	// System.out.println("Columes---------------");
-	// 	// this.printStringArray(columes);
-	// 	System.out.println("diagnal 1---------------");
-	// 	this.printStringArray(diagnal1);		
-	// 	System.out.println("diagnal 2---------------");
-	// 	this.printStringArray(diagnal2);
+		System.out.println("rows------------------");
+		this.printStringArray(rows);
+		System.out.println("Columes---------------");
+		this.printStringArray(columes);
+		System.out.println("diagnal 1---------------");
+		this.printStringArray(diagnal1);		
+		System.out.println("diagnal 2---------------");
+		this.printStringArray(diagnal2);
 
-	// 	// if (size >= 7) {
-	// 	// 	ArrayList<String> allStrings = new ArrayList<String>();
-	// 	// 	int good = 0;
-	// 	// 	int bad = 0;
 
-	// 	// 	// horizontal
-	// 	// 	good += getScore()
-	// 	// }
+		return 1;
+	}
 
-	// 	return 1;
-	// }
+}
+
+
 
 
 

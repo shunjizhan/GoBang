@@ -44,8 +44,8 @@ class InputHelper {
 
   InputHelper() {
     this.first = true;
-    this.size = 11;
-    this.depth = 2;
+    this.size = 6;
+    this.depth = 1;
   }
 }
 
@@ -55,23 +55,28 @@ class Play {
     public Player currentPlayer;
     public boolean humanFirst;
     public BufferedReader br;
+    public final int defaultDepth = 3;
 
     Play() {
+    	System.out.println("Play()");
     	this.board = new ChessBoard(15);
       this.humanFirst = true;
-      this.initializeGame(2);
+      this.initializeGame(this.defaultDepth);
     }
 
     Play(int size) {
+    	System.out.println("Play(int size)");
       if (size < 5) { size = 5; }
       if (size > 26) { size = 26; }
 
     	this.board = new ChessBoard(size);
       this.humanFirst = true;
-      this.initializeGame(2); 
+      this.initializeGame(this.defaultDepth); 
     }
 
     Play(int size, boolean first, int depth) {
+    	System.out.println("Play(int size, boolean first, int depth)");
+
       if (size < 5) { size = 5; }
       if (size > 26) { size = 26; }
 
