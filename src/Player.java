@@ -31,9 +31,9 @@ public class Player {
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus) {
-		if (this.nextPositions.size() < 10) {
+		if (this.nextPositions.size() < 15) {
 			return this.decidePosition(chessStatus, this.depth + 2, this.color);
-		} else if (this.nextPositions.size() < 35) {
+		} else if (this.nextPositions.size() < 40) {
 			return this.decidePosition(chessStatus, this.depth + 1, this.color);
 		} else {
 			return this.decidePosition(chessStatus, this.depth, this.color);
@@ -61,13 +61,15 @@ public class Player {
 		// .get(0) : best position (int[2]) , .get(1)[0] : best score
 		ArrayList<int[]> best = new ArrayList<int[]>();
 
-		// System.out.println("deciding position... depth: " + depth);
+		if (depth >= 2) {
+			System.out.println("deciding position... depth: " + depth);
+		}
 		this.updatePotentialPositions(chessStatus);
 		// System.out.println("deciding in: " + this.nextPositions.size() + "position");
 
 		// this.printPotentialPositions();
 
-		double maxScore = -99999.0;
+		double maxScore = -999999999;
 		double currentScore;
 		int bestPosition[] = new int[2];
 		for (int[] position : this.nextPositions) {
@@ -84,6 +86,7 @@ public class Player {
 				currentScore = (-1) * this.decidePosition(newStatus, depth - 1, color * (-1)).get(1)[0];
 			}
 
+			// System.out.println("current score: " + currentScore);
 			if (currentScore > maxScore) {
 				maxScore = currentScore;
 				bestPosition = position;
@@ -102,95 +105,6 @@ public class Player {
 		best.add(temp2);
 		return best;
 	}
-
-
-	// public int getBoardScore(int[][] newStatus, int color) {
-	// 	/*************** ASSERT size >= 6 *******************/
-
-	// 	int size = newStatus.length;
-	// 	int good = 0;
-	// 	int bad = 0;
-	// 	String s = "";
-		
-	// 	for (int i = 0; i < size; i++) {
-	// 		for (int j = 0; j < size; j++) {
-	// 			// left
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard(i, (j - k), size))
-	// 					s += this.getSymble(newStatus[i][j - k]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));
-
-	// 			// right
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard(i, (j + k), size))
-	// 					s += this.getSymble(newStatus[i][j + k]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));			
-
-	// 			// up
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard((i - k), j, size))
-	// 					s += this.getSymble(newStatus[i - k][j]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));	
-
-	// 			// down
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard((i + k), j, size))
-	// 					s += this.getSymble(newStatus[i + k][j]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));	
-
-	// 			// 左上
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard((i - k), (j - k), size))
-	// 					s += this.getSymble(newStatus[i - k][j - k]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));	
-
-	// 			// 右上
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard((i - k), (j + k), size))
-	// 					s += this.getSymble(newStatus[i - k][j + k]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));	
-
-	// 			// 左下
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard((i + k), (j - k), size))
-	// 					s += this.getSymble(newStatus[i + k][j - k]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));		
-
-	// 			// 右下
-	// 			s = "";
-	// 			for (int k = 0; k < 6; k++) {
-	// 				if (this.isInBoard((i + k), (j + k), size))
-	// 					s += this.getSymble(newStatus[i + k][j + k]);
-	// 			}
-	// 			good += this.evaluate(s, color);
-	// 			bad += this.evaluate(s, color * (-1));		
-
-	// 		}
-	// 	}
-
-	// 	return good - bad + 1000;
-	// }
 
 	public String getSymble(int i) {
 		if (i == 1)
@@ -242,7 +156,7 @@ public class Player {
 
 		// 五连 999999
 		if (subStringNum(s, "XXXXX") > 0) {
-			return 99999999;
+			return 909999999;
 		}
 
 		// 活四 10000
