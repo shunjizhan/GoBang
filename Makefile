@@ -1,5 +1,5 @@
 test: Gobang executable 
-	# python referee.py 11 ./Gobang ./Gobang
+	python referee.py 11 ./Gobang ./Gobang
 	# python referee.py 15 ./Gobang ./executable
 	# python referee.py 11 ./executable ./Gobang	
 	# python referee.py 5 ./Gobang ./Gobang
@@ -11,7 +11,7 @@ test: Gobang executable
 	# python referee.py 15 ./Gobang ./Gobang
 	# python referee.py 15 ./Gobang ./executable
 	# python referee.py 15 ./executable ./Gobang
-	python referee.py 26 ./Gobang ./Gobang
+	# python referee.py 26 ./Gobang ./Gobang
 	# python referee.py 26 ./Gobang ./executable
 	# python referee.py 26 ./executable ./Gobang
 

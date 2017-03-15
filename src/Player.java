@@ -58,16 +58,16 @@ public class Player {
 			// System.out.println("BBBBB 3");
 
 			// emulate this move 
-			int x = fourStepResult.get(0)[0];
-			int y = fourStepResult.get(0)[1];
-			int[][] newStatus = this.deepCopy(chessStatus);
-			newStatus[x][y] = color;
+			int x = fourStepResult.get(0)[1] - 1;
+			int y = fourStepResult.get(0)[0];
+			int[][] n = this.deepCopy(chessStatus);
+			n[x][y] = this.color;
 
-			ArrayList<int[]> opponentNextMove = this.decidePosition(newStatus, 1, this.color * (-1));
+			ArrayList<int[]> opponentNextMove = this.decidePosition(n, 1, this.color * (-1));
 			int opponentNextScore = opponentNextMove.get(1)[0];
-			int a = opponentNextMove.get(0)[0] + 1;
-			int b = opponentNextMove.get(0)[1];
-			// System.out.println("opponentNextScore: " + opponentNextScore + " " + intToChar(b) + a);
+			// int a = opponentNextMove.get(0)[0];
+			// int b = opponentNextMove.get(0)[1];
+			// System.out.println("opponentNextScore: " + opponentNextScore + " " + intToChar(a) + b);
 			
 			// if ( opponentNextScore != 88888888 && opponentNextScore != 7777777) {
 			if ( opponentNextScore < 6666666) {
@@ -110,6 +110,9 @@ public class Player {
 
 		// this.printPotentialPositions();
 
+		int temp[] = new int[2];
+		int temp2[] = new int[1];
+
 		double maxScore = -99999999;
 		double currentScore;
 		int bestPosition[] = new int[2];
@@ -122,13 +125,40 @@ public class Player {
 				// evaluate this steps score
 				// System.out.println("current weight: " + this.weight(position, size));
 				int boardScore = this.getBoardScore(newStatus, color);
+				if (boardScore > 6666666) {
+					// if five or four, return this move directly
+
+					temp[0] = position[1];
+					temp[1] = position[0] + 1;
+					temp2[0] = (int) boardScore;
+					// System.out.println("depth: +" + depth+ "bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
+
+					best.add(temp);
+					best.add(temp2);
+					return best;
+				}
+
 				int aa = position[0] + 1;
-				// if (boardScore == 88888888) {System.out.println("color: " + color + " 88888888: " + intToChar(position[1]) + aa);}
+				// if (boardScore > 7777700) {System.out.println("color: " + color + " 88888888: " + intToChar(position[1]) + aa);}
 				// System.out.println("color: " + color + " position: " + intToChar(position[1]) + aa + "boardScore: " + boardScore);
 				currentScore = boardScore * this.weight(position, size);
 				// System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
 			} else {
 				currentScore = (-1) * this.decidePosition(newStatus, depth - 1, color * (-1)).get(1)[0];
+
+				if (currentScore > 6666666) {
+					temp[0] = position[1];
+					temp[1] = position[0] + 1;
+					temp2[0] = (int) currentScore;
+					// System.out.println("depth: +" + depth+ "bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
+
+					best.add(temp);
+					best.add(temp2);
+					return best;
+
+				}
+				// if (depth == 2)
+				// 	System.out.println("depth: +" + depth+ "Position: " + intToChar(position[1]) + Integer.toString(position[0] + 1) + " score: " + currentScore);
 			}
 
 			// System.out.println("current score: " + currentScore);
@@ -139,12 +169,12 @@ public class Player {
 
 		}
 
-		int temp[] = new int[2];
-		int temp2[] = new int[1];
 		temp[0] = bestPosition[1];
 		temp[1] = bestPosition[0] + 1;
 		temp2[0] = (int) maxScore;
-		// System.out.println("depth: +" + depth+ "bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
+
+		// if (depth == 2)
+		// 	System.out.println("depth: +" + depth+ "bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
 
 		best.add(temp);
 		best.add(temp2);
