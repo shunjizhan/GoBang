@@ -31,13 +31,13 @@ public class Player {
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus) {
-		if (this.nextPositions.size() < 15) {
-			return this.decidePosition(chessStatus, this.depth + 2, this.color);
-		} else if (this.nextPositions.size() < 40) {
-			return this.decidePosition(chessStatus, this.depth + 1, this.color);
-		} else {
+		// if (this.nextPositions.size() < 15) {
+		// 	return this.decidePosition(chessStatus, this.depth + 2, this.color);
+		// } else if (this.nextPositions.size() < 40) {
+		// 	return this.decidePosition(chessStatus, this.depth + 1, this.color);
+		// } else {
 			return this.decidePosition(chessStatus, this.depth, this.color);
-		}
+		// }
 	}
 
 	public double weight(int[] position, int size) {
@@ -99,7 +99,7 @@ public class Player {
 		temp[0] = bestPosition[1];
 		temp[1] = bestPosition[0] + 1;
 		temp2[0] = (int) maxScore;
-		// System.out.println("bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
+		// System.out.println("depth: +" + depth+ "bestPosition: " + intToChar(temp[0]) + Integer.toString(temp[1]) + " score: " + temp2[0]);
 
 		best.add(temp);
 		best.add(temp2);
@@ -141,15 +141,12 @@ public class Player {
 
 	public int evaluate(String s, int color) {
 		// System.out.println("evalueting: " + s);
-		if (color == -1) {
-			s = this.modify(s);
+		if (s.length() < 6) {
+			return 0;
 		}
 
-		int length = s.length();
-		if (length < 6) {
-			for (int j = 6; j > length; j--) {
-				s += "O";
-			}
+		if (color == -1) {
+			s = this.modify(s);
 		}
 
 		int score = 0;
@@ -160,9 +157,7 @@ public class Player {
 		}
 
 		// 活四 10000
-		if (subStringNum(s, "-XXXX-") > 0) {
-			return 999999;
-		}
+		score += 10000 * subStringNum(s, "-XXXX-"); 
 
 		// 冲四 5000
 		score += 5000 * subStringNum(s, "-XXXXO"); 
@@ -248,7 +243,7 @@ public class Player {
 		score += 10 * subStringNum(s, "OX----"); 
 
 		// 死四 -5
-		score += (-200) * subStringNum(s, "OXXXXO");
+		score += (-20) * subStringNum(s, "OXXXXO");
 		score += (-20) * subStringNum(s, "OXXX-O");
 		score += (-20) * subStringNum(s, "OXX-XO");
 		score += (-20) * subStringNum(s, "OX-XXO");
@@ -273,11 +268,23 @@ public class Player {
 	}
 
 	public int subStringNum(String str, String sub) {
-		int count = 0;
-		while (str.indexOf(sub) > -1) {
-		    str = str.replaceFirst(sub, "");
-		    count++;
+		if (str.length() < 6 || sub.length() < 6) {
+			return 0;
 		}
+
+		// System.out.print("String = " + str + " " + "sub = " + sub + " ");
+
+		int count = 0;
+		String six = "";
+		for (int i = 0; i < str.length() - 5; i++) {
+			// System.out.print("six = " + six + " ");
+			six = str.substring(i, i + 6);
+			if (six.equals(sub)) {
+				count++;
+			}
+		}
+		// System.out.println("count = " + count);
+
 		return count ;
 	}
 

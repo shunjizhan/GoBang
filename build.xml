@@ -14,14 +14,14 @@
     <javac srcdir="src" destdir="." debug="true"/>
   </target>
 
-  <target name="jar">
-    <!-- <mkdir dir="build/jar"/> -->
+<!--   <target name="jar">
+    <mkdir dir="build/jar"/>
     <jar destfile="AI.jar" basedir="build/classes" />
-<!--     <manifest>
+    <manifest>
       <attribute name="AI" value="com.gobang"/>
-    </manifest> -->
+    </manifest>
   </target>
-
+ -->
   <target name="run" depends="clean, compile">
     <!-- <java classpath="build/classes" classname="Game" /> -->
     <java classpath="." classname="Game" />

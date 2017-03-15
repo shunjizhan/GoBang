@@ -1,20 +1,20 @@
-test: AI executable 
-	# python referee.py 11 ./AI ./AI
-	# python referee.py 15 ./AI ./executable
-	# python referee.py 11 ./executable ./AI	
-	# python referee.py 5 ./AI ./AI
-	# python referee.py 5 ./AI ./executable
-	# python referee.py 5 ./executable ./AI
-	# python referee.py 8 ./AI ./AI
-	# python referee.py 8 ./AI ./executable
-	# python referee.py 8 ./executable ./AI
-	# python referee.py 15 ./AI ./AI
-	python referee.py 15 ./AI ./executable
-	# python referee.py 15 ./executable ./AI
-	# python referee.py 26 ./AI ./AI
-	# python referee.py 26 ./AI ./executable
-	# python referee.py 26 ./executable ./AI
+test: Gobang executable 
+	# python referee.py 11 ./Gobang ./Gobang
+	# python referee.py 15 ./Gobang ./executable
+	# python referee.py 11 ./executable ./Gobang	
+	# python referee.py 5 ./Gobang ./Gobang
+	# python referee.py 5 ./Gobang ./executable
+	# python referee.py 5 ./executable ./Gobang
+	# python referee.py 8 ./Gobang ./Gobang
+	# python referee.py 8 ./Gobang ./executable
+	# python referee.py 8 ./executable ./Gobang
+	# python referee.py 15 ./Gobang ./Gobang
+	python referee.py 15 ./Gobang ./executable
+	# python referee.py 15 ./executable ./Gobang
+	# python referee.py 26 ./Gobang ./Gobang
+	# python referee.py 26 ./Gobang ./executable
+	# python referee.py 26 ./executable ./Gobang
 
-run: AI
+run: Gobang
 	ant compile
-	./AI -n 5
+	./Gobang -n 5
