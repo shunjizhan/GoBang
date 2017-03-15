@@ -34,6 +34,8 @@ public class Game {
 
     	Play game = new Play(h.size, h.first, h.depth);
     	game.start();
+    	// Player p = new Player();
+    	// System.out.print(p.subStringNum("----OXXXXX", "OXXXXX"));
     }
 }
 

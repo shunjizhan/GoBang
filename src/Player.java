@@ -31,13 +31,54 @@ public class Player {
 	}
 
 	public ArrayList<int[]> decidePosition(int[][] chessStatus) {
-		// if (this.nextPositions.size() < 15) {
-		// 	return this.decidePosition(chessStatus, this.depth + 2, this.color);
-		// } else if (this.nextPositions.size() < 40) {
-		// 	return this.decidePosition(chessStatus, this.depth + 1, this.color);
-		// } else {
+		// if (this.nextPositions.size() < 10) {
+		// 	System.out.println("AAAAA 4");
+		// 	ArrayList<int[]> fourStepResult = this.decidePosition(chessStatus, this.depth + 2, this.color);
+		// 	System.out.println("BBBBB 4");
+
+		// 	// emulate next move 
+		// 	int x = fourStepResult.get(0)[0];
+		// 	int y = fourStepResult.get(0)[1];
+		// 	int[][] newStatus = this.deepCopy(chessStatus);
+		// 	newStatus[x][y] = color;
+
+		// 	int opponentNextScore = this.decidePosition(newStatus, 1, this.color * (-1)).get(1)[0];
+		// 	System.out.println("CCCCC 4");
+
+		// 	if ( opponentNextScore != 88888888 && opponentNextScore != 7777777) {
+		// 		return fourStepResult;
+		// 	} else {
+		// 		return this.decidePosition(chessStatus, this.depth, this.color);
+		// 	}
+
+		// } else if (this.nextPositions.size() < 30) {
+		if (this.nextPositions.size() < 25) {
+			// System.out.println("AAAAA 3 ");
+			ArrayList<int[]> fourStepResult = this.decidePosition(chessStatus, this.depth + 1, this.color);
+			// System.out.println("BBBBB 3");
+
+			// emulate this move 
+			int x = fourStepResult.get(0)[0];
+			int y = fourStepResult.get(0)[1];
+			int[][] newStatus = this.deepCopy(chessStatus);
+			newStatus[x][y] = color;
+
+			ArrayList<int[]> opponentNextMove = this.decidePosition(newStatus, 1, this.color * (-1));
+			int opponentNextScore = opponentNextMove.get(1)[0];
+			int a = opponentNextMove.get(0)[0] + 1;
+			int b = opponentNextMove.get(0)[1];
+			// System.out.println("opponentNextScore: " + opponentNextScore + " " + intToChar(b) + a);
+			
+			// if ( opponentNextScore != 88888888 && opponentNextScore != 7777777) {
+			if ( opponentNextScore < 6666666) {
+				return fourStepResult;
+			} else {
+				return this.decidePosition(chessStatus, this.depth, this.color);
+			}
+			// return this.decidePosition(chessStatus, this.depth + 1, this.color);
+		} else {
 			return this.decidePosition(chessStatus, this.depth, this.color);
-		// }
+		}
 	}
 
 	public double weight(int[] position, int size) {
@@ -80,7 +121,11 @@ public class Player {
 			if (depth == 1 || this.nextPositions.size() <= 0) {
 				// evaluate this steps score
 				// System.out.println("current weight: " + this.weight(position, size));
-				currentScore = this.getBoardScore(newStatus, color) * this.weight(position, size);
+				int boardScore = this.getBoardScore(newStatus, color);
+				int aa = position[0] + 1;
+				// if (boardScore == 88888888) {System.out.println("color: " + color + " 88888888: " + intToChar(position[1]) + aa);}
+				// System.out.println("color: " + color + " position: " + intToChar(position[1]) + aa + "boardScore: " + boardScore);
+				currentScore = boardScore * this.weight(position, size);
 				// System.out.println("Positon: " + intToChar(position[1]) + "" + Integer.toString(position[0] + 1) + " Score: " + currentScore);
 			} else {
 				currentScore = (-1) * this.decidePosition(newStatus, depth - 1, color * (-1)).get(1)[0];
@@ -121,9 +166,9 @@ public class Player {
 			if (c == 'X')
 				result += 'O';
 			if (c == 'O')
-				result += "X";
-			else
-				result += "-";
+				result += 'X';
+			if (c == '-')
+				result += '-';
 		}
 		return result;
 	}
@@ -152,12 +197,16 @@ public class Player {
 		int score = 0;
 
 		// 五连 999999
-		if (subStringNum(s, "XXXXX") > 0) {
-			return 90999999;
-		}
+		if (subStringNum(s, "XXXXX-") > 0) { return 88888888; }
+		if (subStringNum(s, "-XXXXX") > 0) { return 88888888; }
+		if (subStringNum(s, "XXXXXO") > 0) { return 88888888; }
+		if (subStringNum(s, "OXXXXX") > 0) { return 88888888; }
 
 		// 活四 10000
-		score += 10000 * subStringNum(s, "-XXXX-"); 
+		if (subStringNum(s, "-XXXX-") > 0) {
+			return 7777777;
+		}
+		// score += 10000 * subStringNum(s, "-XXXX-"); 
 
 		// 冲四 5000
 		score += 5000 * subStringNum(s, "-XXXXO"); 
@@ -268,6 +317,10 @@ public class Player {
 	}
 
 	public int subStringNum(String str, String sub) {
+		// if (sub.equals("OXXXXX") && str.length() > 9) {
+		// 	System.out.println(str);
+		// }
+
 		if (str.length() < 6 || sub.length() < 6) {
 			return 0;
 		}
@@ -418,29 +471,62 @@ public class Player {
 
 		int good = 0;
 		int bad = 0;
+		int g = 0;
+		int b = 0;
 
 		// rows
+		// System.out.println("rows");
 		for (int i = 0; i < size; i++) {
 			s = "";
 			for (int j = 0; j < size; j++) {
 				s += this.intToXO(newStatus[i][j]);
 			}
-			good += this.evaluate(s, color);
-			bad += this.evaluate(s, color * (-1));
+			g = this.evaluate(s, color);
+			if (g == 88888888) {
+				// System.out.println("88888888");
+				return 88888888;
+			}
+			if (g == 7777777) {
+				// System.out.println("7777777");
+				return 7777777;
+			}
+
+			b = this.evaluate(s, color * (-1));
+			// if (g == 88888888) return -88888888;
+			// if (g == 7777777) return -7777777;
+
+			good += g;
+			bad += b;
 			// rows.add(s);
 		}
 
+		// System.out.println("Columes");
 		// columes
 		for (int i = 0; i < size; i++) {
 			s = "";
 			for (int j = 0; j < size; j++) {
 				s += this.intToXO(newStatus[j][i]);
 			}
-			good += this.evaluate(s, color);
-			bad += this.evaluate(s, color * (-1));
+			g = this.evaluate(s, color);
+			if (g == 88888888) {
+				// System.out.println("88888888");
+				return 88888888;
+			}
+			if (g == 7777777) {
+				// System.out.println("7777777");
+				return 7777777;
+			}
+
+			b = this.evaluate(s, color * (-1));
+			// if (g == 88888888) return -88888888;
+			// if (g == 7777777) return -7777777;
+
+			good += g;
+			bad += b;
 			// columes.add(s);
 		}
 
+		// System.out.println("diagnal11");
 		// diagnal 1
 		for (int i = 0; i < size; i++) {
 			s = "";
@@ -453,11 +539,26 @@ public class Player {
 					y++;
 				}
 			}
-			good += this.evaluate(s, color);
-			bad += this.evaluate(s, color * (-1));
+			g = this.evaluate(s, color);
+			if (g == 88888888) {
+				// System.out.println("88888888");
+				return 88888888;
+			}
+			if (g == 7777777) {
+				// System.out.println("7777777");
+				return 7777777;
+			}
+
+			b = this.evaluate(s, color * (-1));
+			// if (g == 88888888) return -88888888;
+			// if (g == 7777777) return -7777777;
+
+			good += g;
+			bad += b;
 			
 			// diagnal1.add(s);
 		}
+		// System.out.println("diagnal12");
 		for (int i = 1; i < size; i++) {
 			s = "";
 			int x = i;
@@ -470,12 +571,27 @@ public class Player {
 					y++;
 				}
 			}
-			good += this.evaluate(s, color);
-			bad += this.evaluate(s, color * (-1));
+			g = this.evaluate(s, color);
+			if (g == 88888888) {
+				// System.out.println("88888888");
+				return 88888888;
+			}
+			if (g == 7777777) {
+				// System.out.println("7777777");
+				return 7777777;
+			}
+
+			b = this.evaluate(s, color * (-1));
+			// if (g == 88888888) return -88888888;
+			// if (g == 7777777) return -7777777;
+
+			good += g;
+			bad += b;
 			// diagnal1.add(s);
 		}
 
 		// diagnal 2
+		// System.out.println("diagnal21");
 		for (int i = 0; i < size; i++) {
 			s = "";
 			int x = size - i - 1;
@@ -487,10 +603,25 @@ public class Player {
 					y++;
 				}
 			}
-			good += this.evaluate(s, color);
-			bad += this.evaluate(s, color * (-1));
+			g = this.evaluate(s, color);
+			if (g == 88888888) {
+				// System.out.println("88888888");
+				return 88888888;
+			}
+			if (g == 7777777) {
+				// System.out.println("7777777");
+				return 7777777;
+			}
+
+			b = this.evaluate(s, color * (-1));
+			// if (g == 88888888) return -88888888;
+			// if (g == 7777777) return -7777777;
+
+			good += g;
+			bad += b;
 			// diagnal2.add(s);
 		}
+		// System.out.println("diagnal22");
 		for (int i = 1; i < size; i++) {
 			s = "";
 			int x = size - 1;
@@ -502,8 +633,22 @@ public class Player {
 					y++;
 				}
 			}
-			good += this.evaluate(s, color);
-			bad += this.evaluate(s, color * (-1));
+			g = this.evaluate(s, color);
+			if (g == 88888888) {
+				// System.out.println("88888888");
+				return 88888888;
+			}
+			if (g == 7777777) {
+				// System.out.println("7777777");
+				return 7777777;
+			}
+
+			b = this.evaluate(s, color * (-1));
+			// if (g == 88888888) return -88888888;
+			// if (g == 7777777) return -7777777;
+
+			good += g;
+			bad += b;
 			// diagnal2.add(s);
 		}
 
