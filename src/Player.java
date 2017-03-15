@@ -52,33 +52,33 @@ public class Player {
 		// 	}
 
 		// } else if (this.nextPositions.size() < 30) {
-		if (this.nextPositions.size() < 25) {
-			// System.out.println("AAAAA 3 ");
-			ArrayList<int[]> fourStepResult = this.decidePosition(chessStatus, this.depth + 1, this.color);
-			// System.out.println("BBBBB 3");
+		// if (this.nextPositions.size() < 25) {
+		// 	// System.out.println("AAAAA 3 ");
+		// 	ArrayList<int[]> fourStepResult = this.decidePosition(chessStatus, this.depth + 1, this.color);
+		// 	// System.out.println("BBBBB 3");
 
-			// emulate this move 
-			int x = fourStepResult.get(0)[1] - 1;
-			int y = fourStepResult.get(0)[0];
-			int[][] n = this.deepCopy(chessStatus);
-			n[x][y] = this.color;
+		// 	// emulate this move 
+		// 	int x = fourStepResult.get(0)[1] - 1;
+		// 	int y = fourStepResult.get(0)[0];
+		// 	int[][] n = this.deepCopy(chessStatus);
+		// 	n[x][y] = this.color;
 
-			ArrayList<int[]> opponentNextMove = this.decidePosition(n, 1, this.color * (-1));
-			int opponentNextScore = opponentNextMove.get(1)[0];
-			// int a = opponentNextMove.get(0)[0];
-			// int b = opponentNextMove.get(0)[1];
-			// System.out.println("opponentNextScore: " + opponentNextScore + " " + intToChar(a) + b);
+		// 	ArrayList<int[]> opponentNextMove = this.decidePosition(n, 1, this.color * (-1));
+		// 	int opponentNextScore = opponentNextMove.get(1)[0];
+		// 	// int a = opponentNextMove.get(0)[0];
+		// 	// int b = opponentNextMove.get(0)[1];
+		// 	// System.out.println("opponentNextScore: " + opponentNextScore + " " + intToChar(a) + b);
 			
-			// if ( opponentNextScore != 88888888 && opponentNextScore != 7777777) {
-			if ( opponentNextScore < 6666666) {
-				return fourStepResult;
-			} else {
-				return this.decidePosition(chessStatus, this.depth, this.color);
-			}
-			// return this.decidePosition(chessStatus, this.depth + 1, this.color);
-		} else {
+		// 	// if ( opponentNextScore != 88888888 && opponentNextScore != 7777777) {
+		// 	if ( opponentNextScore < 6666666) {
+		// 		return fourStepResult;
+		// 	} else {
+		// 		return this.decidePosition(chessStatus, this.depth, this.color);
+		// 	}
+		// 	// return this.decidePosition(chessStatus, this.depth + 1, this.color);
+		// } else {
 			return this.decidePosition(chessStatus, this.depth, this.color);
-		}
+		// }
 	}
 
 	public double weight(int[] position, int size) {
