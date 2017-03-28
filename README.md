@@ -12,9 +12,9 @@ or
     ./Gobang
 
 # Options
-`-l`if this is specified, computer will be the dark player.
-`-n [size]`size of the board, can be 5-26, default is 11.
-`-d [depth]` depth of the Minimax tree, default is 2.
+`-l`if this is specified, computer will be the dark player.     
+`-n [size]`size of the board, can be 5-26, default is 11.     
+`-d [depth]` depth of the Minimax tree, default is 2.     
 
 # Sample 
 [](https://raw.githubusercontent.com/shunjizhan/GoBang/master/Gobang_demo.gif)
