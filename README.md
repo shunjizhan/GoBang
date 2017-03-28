@@ -17,7 +17,7 @@ or
 `-d [depth]` depth of the Minimax tree, default is 2.     
 
 # Sample 
-[](https://raw.githubusercontent.com/shunjizhan/GoBang/master/Gobang_demo.gif)
+![](https://raw.githubusercontent.com/shunjizhan/GoBang/master/Gobang_demo.gif?raw=true)
 
 # Referee
 To make this program compete with itself or with other program: 
